@@ -1,0 +1,2745 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>⚡ PL Coach Live</title>
+<style>
+/* ── LIGHT THEME (default) ── */
+:root {
+  --bg:#f5f0e8; --s1:#fffdf7; --s2:#f0ebe0; --s3:#e8e2d6; --s4:#ddd7ca;
+  --bd:#c8c0b0; --bd2:#b0a898;
+  --tx:#1a1612; --mu:#5a5248; --di:#9a9288;
+  --go:#b8860b; --go2:rgba(184,134,11,.10); --go3:rgba(184,134,11,.22);
+  --gr:#16a34a; --grbg:rgba(22,163,74,.10); --grbr:rgba(22,163,74,.30);
+  --re:#dc2626; --rebg:rgba(220,38,38,.10); --rebr:rgba(220,38,38,.28);
+  --bl:#2563eb; --blbg:rgba(37,99,235,.09); --blbr:rgba(37,99,235,.25);
+  --te:#0d9488; --tebg:rgba(13,148,136,.09);
+  --pu:#7c3aed; --pubg:rgba(124,58,237,.09);
+  --or:#ea580c; --orbg:rgba(234,88,12,.09);
+  --r:8px; --r2:12px;
+  --fqd:#0d9488; --cpu:#7c3aed; --ipf:#2563eb;
+  --shadow:0 1px 3px rgba(0,0,0,.12);
+}
+/* ── DARK THEME ── */
+[data-theme="dark"] {
+  --bg:#090b0f; --s1:#111318; --s2:#181c25; --s3:#1f2433; --s4:#252c3e;
+  --bd:#28314a; --bd2:#38456a;
+  --tx:#dde2f0; --mu:#8890aa; --di:#454f68;
+  --go:#f5c518; --go2:rgba(245,197,24,.13); --go3:rgba(245,197,24,.25);
+  --gr:#22c55e; --grbg:rgba(34,197,94,.12); --grbr:rgba(34,197,94,.32);
+  --re:#ef4444; --rebg:rgba(239,68,68,.12); --rebr:rgba(239,68,68,.30);
+  --bl:#60a5fa; --blbg:rgba(96,165,250,.10); --blbr:rgba(96,165,250,.28);
+  --te:#2dd4bf; --tebg:rgba(45,212,191,.10);
+  --pu:#a78bfa; --pubg:rgba(167,139,250,.10);
+  --or:#fb923c; --orbg:rgba(251,146,60,.10);
+  --fqd:#2dd4bf; --cpu:#a78bfa; --ipf:#60a5fa;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:14px;overflow:hidden;}
+#app{display:flex;flex-direction:column;height:100dvh;}
+
+/* ── TOP BAR ── */
+#topbar{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;background:var(--s1);border-bottom:1px solid var(--bd);flex-shrink:0;box-shadow:var(--shadow);}
+.t-logo{font-size:15px;font-weight:800;color:var(--go);letter-spacing:-.3px;}
+.t-meet{font-size:11px;color:var(--mu);max-width:150px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.t-live{display:flex;align-items:center;gap:5px;background:var(--rebg);border:1px solid var(--rebr);border-radius:20px;padding:3px 9px;font-size:10px;font-weight:700;color:var(--re);}
+.t-dot{width:6px;height:6px;border-radius:50%;background:var(--re);animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* ── NAV ── */
+#nav{display:flex;background:var(--s1);border-bottom:1px solid var(--bd);overflow-x:auto;flex-shrink:0;}
+#nav::-webkit-scrollbar{display:none;}
+.nb{flex-shrink:0;padding:0 16px;height:40px;font-size:12px;font-weight:600;color:var(--mu);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;}
+.nb.on{color:var(--go);border-bottom-color:var(--go);}
+
+/* ── PANELS ── */
+#panels{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+.pnl{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0;}
+.pnl.on{display:flex;}
+.scr{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scr::-webkit-scrollbar{width:3px;}
+.scr::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px;}
+.p{padding:10px 12px;}
+
+/* ── ATH BAR ── */
+.ab{display:flex;gap:6px;padding:8px 12px;background:var(--s1);border-bottom:1px solid var(--bd);overflow-x:auto;flex-shrink:0;}
+.ab::-webkit-scrollbar{display:none;}
+.ac{flex-shrink:0;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--bd2);background:var(--s2);color:var(--mu);cursor:pointer;}
+.ac.on{background:var(--go);color:#000;border-color:var(--go);}
+
+/* ── SUB NAV ── */
+.sn{display:flex;background:var(--s1);border-bottom:1px solid var(--bd);flex-shrink:0;}
+.sbn{flex:1;height:34px;font-size:11px;font-weight:600;color:var(--mu);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:.5px;}
+.sbn.on{color:var(--go);border-bottom-color:var(--go);}
+.sp{display:none;}.sp.on{display:block;}
+
+/* ── CARD ── */
+.cd{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow);}
+.ch{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--s2);border-bottom:1px solid var(--bd);}
+.ct{font-size:12px;font-weight:700;}
+.cb{padding:10px 12px;}
+
+/* ── STAT STRIP ── */
+.ss4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:6px;}
+.ss2{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-bottom:6px;}
+.sc{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:7px 8px;text-align:center;box-shadow:var(--shadow);}
+.sc.hi{border-color:var(--go3);background:var(--go2);}
+.sl{font-size:9px;color:var(--di);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+.sv{font-size:16px;font-weight:800;font-family:monospace;color:var(--go);}
+.sv.sm{font-size:13px;}.sv.mu{color:var(--mu);}
+
+/* ── LIFT HEADER ── */
+.lh{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--s2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.li{font-size:15px;}
+.lt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;flex:1;}
+.lb{font-size:11px;color:var(--mu);}
+.lb b{color:var(--go);}
+
+/* ── ATT1 ── */
+.aw{padding:8px 12px;}
+.a1r{display:grid;grid-template-columns:24px 1fr auto;gap:6px;align-items:center;margin-bottom:6px;}
+.a1n{font-size:10px;color:var(--mu);font-weight:700;text-align:center;}
+.a1k{background:var(--s2);border:1px solid var(--go);border-radius:var(--r);padding:8px 10px;text-align:center;cursor:pointer;min-width:76px;}
+.a1k.em{border-color:var(--bd2);}
+.a1k .kg{font-size:18px;font-weight:800;font-family:monospace;color:var(--go);}
+.a1k.em .kg{color:var(--di);}
+.a1k .lb2{font-size:10px;color:var(--di);margin-top:1px;}
+.rb{display:flex;gap:4px;}
+.bok,.bno{flex:1;padding:8px 4px;border-radius:var(--r);font-size:13px;font-weight:800;cursor:pointer;border:1px solid;text-align:center;font-family:inherit;-webkit-appearance:none;touch-action:manipulation;}
+.bok{background:var(--grbg);border-color:var(--grbr);color:var(--gr);}
+.bno{background:var(--rebg);border-color:var(--rebr);color:var(--re);}
+.bok.sel{background:rgba(34,197,94,.3);}
+.bno.sel{background:rgba(239,68,68,.3);}
+
+/* ── WU INLINE ── */
+.wu-row{display:flex;gap:4px;overflow-x:auto;padding-bottom:5px;margin-bottom:8px;}
+.wu-cell{flex-shrink:0;background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:4px 8px;text-align:center;min-width:48px;box-shadow:var(--shadow);}
+.wu-pct{font-size:9px;color:var(--di);}
+.wu-kg{font-size:13px;font-weight:800;font-family:monospace;}
+
+/* ── OPT TABLE ── */
+.ot{overflow-x:auto;margin-bottom:8px;}
+.otbl{border-collapse:collapse;font-size:12px;width:100%;}
+.otbl th{background:var(--s2);color:var(--di);font-size:9px;font-weight:700;text-transform:uppercase;padding:4px 6px;border-bottom:1px solid var(--bd);text-align:center;white-space:nowrap;}
+.otbl th:first-child{text-align:left;}
+.otbl td{padding:5px 6px;border-bottom:1px solid var(--bd);text-align:center;vertical-align:middle;}
+.otbl td:first-child{text-align:left;font-weight:700;font-size:11px;color:var(--mu);}
+.otbl tr.r2{background:rgba(96,165,250,.04);}
+.otbl tr.r3{background:rgba(34,197,94,.04);}
+.okg{font-family:monospace;font-weight:700;color:var(--go);cursor:pointer;}
+.olbs{font-family:monospace;color:var(--di);font-size:11px;}
+.otot{font-family:monospace;font-weight:600;}
+
+/* ── RECORDS ── */
+.fl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin:10px 0 5px;}
+.fl.fqd{color:var(--fqd);}
+.fl.cpu{color:var(--cpu);}
+.fl.ipf{color:var(--ipf);}
+.rtbl{border-collapse:collapse;font-size:12px;width:100%;margin-bottom:6px;}
+.rtbl th{background:var(--s2);color:var(--mu);font-size:9px;font-weight:700;text-transform:uppercase;padding:5px 8px;border-bottom:1px solid var(--bd);text-align:left;}
+.rtbl th:not(:first-child){text-align:center;}
+.rtbl td{padding:6px 8px;border-bottom:1px solid var(--bd);}
+.rtbl td:not(:first-child){text-align:center;}
+.rtbl td:first-child{color:var(--mu);font-size:11px;}
+.ri{background:var(--s2);border:1px solid var(--bd2);border-radius:5px;color:var(--tx);font-size:12px;padding:4px 6px;width:70px;text-align:center;font-family:monospace;}
+.ri:focus{outline:none;border-color:var(--go);}
+.gok{color:var(--gr);font-weight:700;}
+.gne{color:var(--go);}
+.gfa{color:var(--di);}
+
+/* ═══════════════════════════════════════════════
+   SCENARIO ENGINE UI
+═══════════════════════════════════════════════ */
+/* Phase banner */
+.phase-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--bd);flex-shrink:0;}
+.phase-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;animation:blink 1.2s infinite;}
+.phase-title{font-size:13px;font-weight:800;}
+.phase-sub{font-size:11px;color:var(--mu);margin-top:1px;}
+
+/* Scenario card — main unit */
+.sc-wrap{padding:10px 12px;}
+
+/* Priority label */
+.prio-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.prio-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;flex-shrink:0;}
+.prio-1{background:rgba(34,197,94,.2);border:1px solid var(--grbr);color:var(--gr);}
+.prio-2{background:var(--go2);border:1px solid var(--go3);color:var(--go);}
+.prio-3{background:var(--blbg);border:1px solid var(--blbr);color:var(--bl);}
+.prio-4{background:var(--pubg);border:1px solid rgba(167,139,250,.3);color:var(--pu);}
+.prio-5{background:var(--orbg);border:1px solid rgba(251,146,60,.3);color:var(--or);}
+.prio-n{background:var(--s2);border:1px solid var(--bd2);color:var(--mu);}
+.prio-risk{background:var(--rebg);border:1px solid var(--rebr);color:var(--re);}
+
+/* Scenario block */
+.scen-block{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow);}
+.scen-block.is-target{border-color:var(--go3);box-shadow:0 0 0 1px var(--go2);}
+.scen-block.is-top{border-color:var(--grbr);}
+.scen-block.is-risk{border-color:var(--rebr);}
+
+.scen-head{display:flex;align-items:center;padding:10px 12px;background:var(--s2);border-bottom:1px solid var(--bd);gap:10px;flex-wrap:wrap;}
+.scen-kg{font-size:22px;font-weight:900;font-family:monospace;color:var(--go);flex-shrink:0;}
+.scen-lbs{font-size:11px;color:var(--di);font-family:monospace;}
+.scen-offset{font-size:12px;font-weight:700;padding:3px 8px;border-radius:5px;flex-shrink:0;}
+.of-down{background:var(--rebg);color:var(--re);}
+.of-0{background:var(--go2);color:var(--go);}
+.of-up{background:var(--grbg);color:var(--gr);}
+.of-far{background:var(--orbg);color:var(--or);}
+.scen-reco{flex:1;min-width:120px;}
+.reco-txt{font-size:12px;font-weight:700;}
+.reco-sub{font-size:10px;color:var(--mu);margin-top:2px;}
+
+/* Scenario body grid */
+.scen-body{padding:10px 12px;}
+.scen-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;}
+.scen-cell{background:var(--s2);border-radius:var(--r);padding:7px 8px;text-align:center;}
+.sc-lbl{font-size:9px;color:var(--di);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+.sc-val{font-size:14px;font-weight:800;font-family:monospace;}
+
+/* Rank display */
+.rank-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;}
+.rank-cell{background:var(--s2);border-radius:var(--r);padding:7px 8px;text-align:center;}
+.rank-lbl{font-size:9px;color:var(--di);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.rank-num{font-size:20px;font-weight:900;font-family:monospace;}
+.rank-sub{font-size:9px;color:var(--di);margin-top:2px;}
+.rk-gold{color:var(--go);}
+.rk-green{color:var(--gr);}
+.rk-blue{color:var(--bl);}
+.rk-red{color:var(--re);}
+.rk-mut{color:var(--mu);}
+
+/* Rivals section */
+.rivals-section{margin-bottom:8px;}
+.rivals-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.rival-row{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-radius:6px;margin-bottom:3px;font-size:11px;}
+.rival-row.above{background:var(--rebg);border:1px solid var(--rebr);}
+.rival-row.below{background:var(--grbg);border:1px solid var(--grbr);}
+.rival-row.eq{background:var(--go2);border:1px solid var(--go3);}
+.rival-name{font-weight:600;flex:1;}
+.rival-tot{font-family:monospace;font-weight:700;}
+.rival-diff{font-family:monospace;font-size:10px;}
+
+/* Records section */
+.rec-row-sc{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+.rec-tag2{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:700;}
+.rec-tag2.beat{background:rgba(34,197,94,.18);border:1px solid var(--grbr);color:var(--gr);}
+.rec-tag2.close{background:var(--go2);border:1px solid var(--go3);color:var(--go);}
+.rec-tag2.far{background:var(--s2);border:1px solid var(--bd);color:var(--di);}
+
+/* Min-to-beat section */
+.mtb-section{padding:0 12px 10px;}
+.mtb-title{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+.mtb-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;border:1px solid var(--bd);margin-bottom:4px;background:var(--s1);}
+.mtb-name{flex:1;font-size:12px;font-weight:600;}
+.mtb-max{font-size:10px;color:var(--mu);}
+.mtb-need{font-family:monospace;font-size:14px;font-weight:800;color:var(--go);}
+.mtb-need.easy{color:var(--gr);}
+.mtb-need.hard{color:var(--re);}
+.mtb-need.imp{color:var(--di);}
+.mtb-arrow{font-size:11px;color:var(--di);}
+
+/* Tac target input */
+.tac-input-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--s2);border-bottom:1px solid var(--bd);}
+.tac-inp{background:var(--s3);border:1px solid var(--bd2);border-radius:6px;color:var(--go);font-size:15px;font-weight:800;padding:5px 10px;width:85px;font-family:monospace;text-align:center;}
+.tac-inp:focus{outline:none;border-color:var(--go);}
+
+/* Flight table */
+.flt-scr{overflow-x:auto;}
+.flt{border-collapse:collapse;font-size:12px;width:100%;min-width:560px;}
+.flt th{background:var(--s2);color:var(--di);font-size:9px;font-weight:700;text-transform:uppercase;padding:5px 8px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap;}
+.flt td{padding:7px 8px;border-bottom:1px solid var(--bd);vertical-align:middle;white-space:nowrap;}
+.flt tr.mine td{background:rgba(245,197,24,.03);}
+.flt tr.mine td:first-child{border-left:2px solid var(--go);}
+.mt{display:inline-block;background:var(--go2);color:var(--go);font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;}
+.ft{display:inline-block;background:var(--rebg);color:var(--re);font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:3px;}
+
+/* Live tracking additions in flight */
+.att-dots{display:flex;gap:3px;align-items:center;}
+.att-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--bd2);}
+.att-dot.ok{background:var(--gr);border-color:var(--grbr);}
+.att-dot.fail{background:var(--re);border-color:var(--rebr);}
+.att-dot.next{background:var(--go);border-color:var(--go3);animation:blink 1s infinite;}
+.att-dot.empty{background:transparent;}
+
+/* Setup */
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;}
+.fg{display:flex;flex-direction:column;gap:3px;}
+.fg label{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;}
+.fg input,.fg select{background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r);color:var(--tx);font-size:13px;padding:7px 10px;width:100%;-webkit-appearance:none;font-family:inherit;}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--go);}
+.slbl{font-size:10px;font-weight:700;color:var(--di);text-transform:uppercase;letter-spacing:1px;margin:10px 0 6px;}
+.ar{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);}
+.av{width:34px;height:34px;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--go);flex-shrink:0;}
+.ai{flex:1;}
+.an{font-size:13px;font-weight:600;}
+.am{font-size:10px;color:var(--mu);margin-top:1px;}
+.empty{text-align:center;padding:32px 16px;color:var(--di);}
+.ei{font-size:32px;margin-bottom:8px;opacity:.4;}
+.empty p{font-size:12px;}
+
+/* BUTTONS */
+.btn{border:none;border-radius:var(--r);padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btng{background:var(--go);color:#000;}
+.btng:active{opacity:.85;}
+.btngh{background:var(--s2);color:var(--tx);border:1px solid var(--bd2);}
+.btnd{background:var(--rebg);color:var(--re);border:1px solid var(--rebr);}
+.bsm{padding:4px 10px;font-size:11px;}
+.br{display:flex;gap:8px;margin-top:10px;}
+
+/* MODALS */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:flex-end;justify-content:center;z-index:999;backdrop-filter:blur(3px);}
+.mbg.hid{display:none;}
+.mo{background:var(--s1);border-radius:16px 16px 0 0;border-top:2px solid var(--bd);padding:18px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;box-shadow:0 -4px 20px rgba(0,0,0,.15);}
+.mo::-webkit-scrollbar{display:none;}
+.moti{font-size:15px;font-weight:800;margin-bottom:14px;}
+
+/* NUMPAD */
+.npd{background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r);padding:10px 14px;font-size:28px;font-weight:800;font-family:monospace;color:var(--go);text-align:right;min-height:52px;margin-bottom:8px;box-shadow:inset 0 2px 4px rgba(0,0,0,.08);}
+.npm{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.nk{background:var(--s2);border:1px solid var(--bd2);border-radius:10px;font-size:20px;font-weight:700;padding:12px;cursor:pointer;text-align:center;color:var(--tx);font-family:monospace;}
+.nk:active{background:var(--s3);}
+.nk.del{font-size:14px;color:var(--mu);}
+
+/* SAVE/LOAD */
+.save-btn{background:var(--tebg);border:1px solid rgba(45,212,191,.3);color:var(--te);border-radius:var(--r);padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;}
+.load-btn{background:var(--pubg);border:1px solid rgba(167,139,250,.3);color:var(--pu);border-radius:var(--r);padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;}
+
+/* utils */
+.mono{font-family:monospace;} .go{color:var(--go);} .gr{color:var(--gr);}
+.re{color:var(--re);} .mu{color:var(--mu);} .di{color:var(--di);}
+.bl{color:var(--bl);} .te{color:var(--te);}
+.bold{font-weight:700;} .mb8{margin-bottom:8px;} .mt8{margin-top:8px;}
+.row{display:flex;align-items:center;gap:6px;}
+.btwn{display:flex;align-items:center;justify-content:space-between;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div id="topbar">
+  <div class="t-logo">⚡ PL Coach Live</div>
+  <div class="t-meet" id="tb-meet">Nouvelle compétition</div>
+  <div style="display:flex;gap:6px;align-items:center;">
+    <button id="theme-toggle" onclick="toggleTheme()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:20px;padding:4px 10px;font-size:13px;cursor:pointer;">🌙</button>
+    <button onclick="openArchiveModal()" style="background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.3);color:var(--te);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;" title="Archiver cette compétition">🏆 Archiver</button>
+    <button class="save-btn" onclick="saveData()">💾</button>
+    <button class="load-btn" onclick="loadData()">📂</button>
+    <div class="t-live"><div class="t-dot"></div>LIVE</div>
+  </div>
+</div>
+
+<div id="nav">
+  <button class="nb on" data-nav="gp">🏋 Game Plan</button>
+  <button class="nb" data-nav="sc">⚡ Scénarios</button>
+  <button class="nb" data-nav="fl">📋 Flight</button>
+  <button class="nb" data-nav="hi">📈 Historique</button>
+  <button class="nb" data-nav="su">⚙ Setup</button>
+</div>
+
+<div id="panels">
+
+  <!-- GAME PLAN -->
+  <div class="pnl on" id="pnl-gp">
+    <div class="ab" id="ab-gp"></div>
+    <div class="sn">
+      <button class="sbn on" data-sub="att">Tentatives</button>
+      <button class="sbn" data-sub="wu">Warm-up</button>
+      <button class="sbn" data-sub="rec">Records</button>
+      <button class="sbn" data-sub="std">Standards</button>
+    </div>
+    <div class="scr" id="gp-scr">
+      <div id="sp-att" class="sp on"></div>
+      <div id="sp-wu" class="sp"></div>
+      <div id="sp-rec" class="sp"></div>
+      <div id="sp-std" class="sp"></div>
+    </div>
+  </div>
+
+  <!-- SCENARIOS -->
+  <div class="pnl" id="pnl-sc">
+    <div class="ab" id="ab-sc"></div>
+    <div class="scr" id="sc-scr">
+      <div id="sp-sc"></div>
+    </div>
+  </div>
+
+  <!-- FLIGHT -->
+  <div class="pnl" id="pnl-fl">
+    <div class="ab" id="ab-fl"></div>
+    <div class="scr">
+      <div class="p">
+        <div class="cd">
+          <div class="ch">
+            <div>
+              <span class="ct" id="fl-title">📋 Flight — Suivi Live</span>
+              <span id="fl-count" style="font-size:10px;color:var(--mu);margin-left:8px;"></span>
+            </div>
+            <button class="btn btng bsm" onclick="openAddLifter()">+ Leveur</button>
+          </div>
+          <div style="padding:0;">
+            <div style="display:flex;gap:12px;align-items:center;padding:6px 12px;font-size:10px;color:var(--mu);border-bottom:1px solid var(--bd);flex-wrap:wrap;">
+            <span style="font-weight:700;">Résultats:</span>
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--go);border:1px solid var(--go3);"></span> En cours / Att.1</span>
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--gr);border:1px solid var(--grbr);"></span> Réussi ✓</span>
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--re);border:1px solid var(--rebr);"></span> Raté ✗</span>
+            <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;border:1px solid var(--bd2);"></span> Non passé</span>
+          </div>
+          <div class="flt-scr">
+              <table class="flt">
+                <thead><tr>
+                  <th>#</th><th>Nom</th><th>BW</th>
+                  <th>SQ</th><th>BP</th><th>DL</th>
+                  <th>Total</th><th>GL</th><th>Résultats</th><th></th>
+                </tr></thead>
+                <tbody id="fl-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div class="pnl" id="pnl-hi">
+    <div class="ab" id="ab-hi"></div>
+    <div class="scr"><div class="p" id="hi-content">
+      <div class="empty"><div class="ei">📈</div><p>Aucune compétition archivée</p></div>
+    </div></div>
+  </div>
+
+  <!-- SETUP -->
+  <div class="pnl" id="pnl-su">
+    <div class="scr"><div class="p">
+      <div class="cd">
+        <div class="ch"><span class="ct">🏆 Compétition</span></div>
+        <div class="cb">
+          <div class="f2">
+            <div class="fg"><label>Nom</label><input id="s-meet" placeholder="Championnat FQD 2025" oninput="syncMeet()"></div>
+            <div class="fg"><label>Date</label><input type="date" id="s-date" oninput="syncMeet()"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cd">
+        <div class="ch">
+          <span class="ct">👥 Athlètes</span>
+          <button class="btn btng bsm" onclick="openAddAth()">+ Ajouter</button>
+        </div>
+        <div class="cb" id="ath-list"></div>
+      </div>
+    </div></div>
+  </div>
+
+</div>
+</div>
+
+<!-- MODAL: Athlète -->
+<div class="mbg hid" id="m-ath">
+<div class="mo">
+  <div class="moti" id="m-ath-ti">Nouvel athlète</div>
+
+  <div class="f2">
+    <div class="fg"><label>Prénom &amp; Nom</label><input id="ma-name" placeholder="Annie Poulin"></div>
+    <div class="fg"><label>Sexe</label>
+      <select id="ma-sex" onchange="refreshCats()">
+        <option value="H">Homme (H)</option><option value="F">Femme (F)</option>
+      </select>
+    </div>
+  </div>
+  <div class="f2">
+    <div class="fg"><label>Division</label>
+      <select id="ma-div">
+        <option>Open (24+)</option><option>Junior (19-23)</option><option>Sub-Junior (14-18)</option>
+        <option>Master I (40-49)</option><option>Master II (50-59)</option>
+        <option>Master III (60-69)</option><option>Master IV (70+)</option>
+      </select>
+    </div>
+    <div class="fg"><label>Catégorie de poids</label><select id="ma-cat"></select></div>
+  </div>
+  <div class="f3">
+    <div class="fg"><label>Poids corp. (kg)</label><input type="number" id="ma-bw" step="0.1" placeholder="74.5"></div>
+    <div class="fg"><label>Flight</label>
+      <select id="ma-fl"><option>A</option><option>B</option><option>C</option><option>D</option></select>
+    </div>
+    <div class="fg"><label>Lot #</label><input type="number" id="ma-lot" placeholder="5"></div>
+  </div>
+
+  <!-- Plateforme & Session -->
+  <div style="font-size:10px;font-weight:700;color:var(--di);text-transform:uppercase;letter-spacing:1px;margin:10px 0 6px;">📍 Plateforme &amp; Session</div>
+  <div class="f3">
+    <div class="fg"><label>Plateforme #</label>
+      <select id="ma-platform">
+        <option value="">—</option>
+        <option value="1">Plateforme 1</option>
+        <option value="2">Plateforme 2</option>
+        <option value="3">Plateforme 3</option>
+        <option value="4">Plateforme 4</option>
+      </select>
+    </div>
+    <div class="fg"><label>Session #</label>
+      <select id="ma-session">
+        <option value="">—</option>
+        <option value="1">Session 1</option>
+        <option value="2">Session 2</option>
+        <option value="3">Session 3</option>
+      </select>
+    </div>
+    <div class="fg"><label>Heure session</label><input type="time" id="ma-sessiontime" placeholder="09:00"></div>
+  </div>
+
+  <!-- Hauteurs de rack -->
+  <div style="font-size:10px;font-weight:700;color:var(--di);text-transform:uppercase;letter-spacing:1px;margin:10px 0 6px;">🔧 Hauteurs de rack</div>
+  <div class="f2" style="margin-bottom:4px;">
+    <div class="fg">
+      <label>🦵 Squat — Rack</label>
+      <div style="display:flex;gap:5px;align-items:center;">
+        <input type="number" id="ma-racksq" step="1" min="1" max="20" placeholder="ex: 10" style="flex:1;">
+        <span style="font-size:11px;color:var(--mu);">cran</span>
+      </div>
+    </div>
+    <div class="fg">
+      <label>💪 Bench — Rack</label>
+      <div style="display:flex;gap:5px;align-items:center;">
+        <input type="number" id="ma-rackbp" step="1" min="1" max="15" placeholder="ex: 5" style="flex:1;">
+        <span style="font-size:11px;color:var(--mu);">cran</span>
+      </div>
+    </div>
+  </div>
+  <div class="f2">
+    <div class="fg">
+      <label>💪 Bench — Safety (safeties)</label>
+      <div style="display:flex;gap:5px;align-items:center;">
+        <input type="number" id="ma-safetybp" step="1" min="1" max="15" placeholder="ex: 3" style="flex:1;">
+        <span style="font-size:11px;color:var(--mu);">cran</span>
+      </div>
+    </div>
+    <div class="fg">
+      <label style="color:var(--di);font-size:9px;">ℹ️ Safety = hauteur des barres de sécurité au bench</label>
+    </div>
+  </div>
+
+  <!-- PRs Compétition -->
+  <div style="font-size:10px;font-weight:700;color:var(--di);text-transform:uppercase;letter-spacing:1px;margin:10px 0 6px;">🏆 PRs Compétition</div>
+  <div class="f3" id="pr-comp-grid">
+    <div class="fg"><label>Squat (kg)</label><input type="number" id="ma-psq" step="0.5" oninput="autoTotal('comp')"></div>
+    <div class="fg"><label>Bench (kg)</label><input type="number" id="ma-pbp" step="0.5" oninput="autoTotal('comp')"></div>
+    <div class="fg"><label>Deadlift (kg)</label><input type="number" id="ma-pdl" step="0.5" oninput="autoTotal('comp')"></div>
+  </div>
+  <div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:7px 12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-size:11px;color:var(--mu);font-weight:700;">Total PR Comp.</span>
+    <span id="tot-comp" style="font-size:15px;font-weight:800;font-family:monospace;color:var(--go);">—</span>
+  </div>
+
+  <!-- PRs Gymnase -->
+  <div style="font-size:10px;font-weight:700;color:var(--di);text-transform:uppercase;letter-spacing:1px;margin:10px 0 6px;">🏋 PRs Gymnase</div>
+  <div class="f3">
+    <div class="fg"><label>Squat (kg)</label><input type="number" id="ma-gsq" step="0.5" oninput="autoTotal('gym')"></div>
+    <div class="fg"><label>Bench (kg)</label><input type="number" id="ma-gbp" step="0.5" oninput="autoTotal('gym')"></div>
+    <div class="fg"><label>Deadlift (kg)</label><input type="number" id="ma-gdl" step="0.5" oninput="autoTotal('gym')"></div>
+  </div>
+  <div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:7px 12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-size:11px;color:var(--mu);font-weight:700;">Total PR Gym</span>
+    <span id="tot-gym" style="font-size:15px;font-weight:800;font-family:monospace;color:var(--mu);">—</span>
+  </div>
+
+  <!-- Objectifs compétition -->
+  <div style="font-size:10px;font-weight:700;color:var(--di);text-transform:uppercase;letter-spacing:1px;margin:10px 0 6px;">🎯 Objectifs compétition</div>
+  <div class="f3">
+    <div class="fg"><label>Squat cible (kg)</label><input type="number" id="ma-osq" step="0.5" oninput="autoTotal('obj')"></div>
+    <div class="fg"><label>Bench cible (kg)</label><input type="number" id="ma-obp" step="0.5" oninput="autoTotal('obj')"></div>
+    <div class="fg"><label>Deadlift cible (kg)</label><input type="number" id="ma-odl" step="0.5" oninput="autoTotal('obj')"></div>
+  </div>
+  <div style="background:var(--go2);border:1px solid var(--go3);border-radius:var(--r);padding:7px 12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-size:11px;color:var(--go);font-weight:700;">Total Objectif</span>
+    <span id="tot-obj" style="font-size:15px;font-weight:800;font-family:monospace;color:var(--go);">—</span>
+  </div>
+
+  <div class="br">
+    <button class="btn btngh" style="flex:1" onclick="closeM('m-ath')">Annuler</button>
+    <button class="btn btng" style="flex:2" onclick="saveAth()">✓ Enregistrer</button>
+  </div>
+</div></div>
+
+<!-- MODAL: Leveur -->
+<div class="mbg hid" id="m-lifter">
+<div class="mo">
+  <div class="moti">Leveur du flight</div>
+  <div class="f2">
+    <div class="fg"><label>Nom</label><input id="l-name" placeholder="Jean Tremblay"></div>
+    <div class="fg"><label>BW (kg)</label><input type="number" id="l-bw" step="0.1"></div>
+  </div>
+  <div class="f3">
+    <div class="fg"><label>SQ A1</label><input type="number" id="l-sqa1" step="0.5"></div>
+    <div class="fg"><label>BP A1</label><input type="number" id="l-bpa1" step="0.5"></div>
+    <div class="fg"><label>DL A1</label><input type="number" id="l-dla1" step="0.5"></div>
+  </div>
+  <div class="f2">
+    <div class="fg"><label>Lot #</label><input type="number" id="l-lot"></div>
+    <div class="fg"><label>Flight</label>
+      <select id="l-flight"><option>A</option><option>B</option><option>C</option><option>D</option></select>
+    </div>
+  </div>
+  <input type="hidden" id="l-mine" value="">
+  <div class="fg mb8"><label>Focus / Notes</label><input id="l-notes" placeholder="À surveiller..."></div>
+  <div class="br">
+    <button class="btn btngh" style="flex:1" onclick="closeM('m-lifter')">Annuler</button>
+    <button class="btn btng" style="flex:2" onclick="saveLifter()">Ajouter</button>
+  </div>
+</div></div>
+
+<!-- MODAL: Lifter edit (attempts) -->
+<div class="mbg hid" id="m-lifter-att">
+<div class="mo">
+  <div class="moti" id="m-la-ti">Résultats du leveur</div>
+  <div id="m-la-body"></div>
+  <div class="br">
+    <button class="btn btng" style="flex:1" onclick="closeM('m-lifter-att')">Fermer</button>
+  </div>
+</div></div>
+
+<!-- MODAL: Numpad -->
+<div class="mbg hid" id="m-np">
+<div class="mo" style="max-width:320px;margin:0 auto;">
+  <div style="font-size:11px;color:var(--mu);margin-bottom:5px;" id="np-lbl">Saisie</div>
+  <div class="npd" id="np-disp">—</div>
+  <div class="npm">
+    <div class="nk" onclick="nk('7')">7</div><div class="nk" onclick="nk('8')">8</div><div class="nk" onclick="nk('9')">9</div>
+    <div class="nk" onclick="nk('4')">4</div><div class="nk" onclick="nk('5')">5</div><div class="nk" onclick="nk('6')">6</div>
+    <div class="nk" onclick="nk('1')">1</div><div class="nk" onclick="nk('2')">2</div><div class="nk" onclick="nk('3')">3</div>
+    <div class="nk del" onclick="nk('del')">⌫</div><div class="nk" onclick="nk('0')">0</div><div class="nk" onclick="nk('.')">.</div>
+  </div>
+  <div class="br" style="margin-top:10px;">
+    <button class="btn btngh" style="flex:1" onclick="closeM('m-np')">Annuler</button>
+    <button class="btn btng" style="flex:2" onclick="confirmNp()">✓ OK</button>
+  </div>
+</div></div>
+
+<!-- MODAL: Archive compétition -->
+<div class="mbg hid" id="m-archive">
+<div class="mo">
+  <div class="moti">🏆 Archiver cette compétition</div>
+  <div style="font-size:12px;color:var(--mu);margin-bottom:12px;">Enregistre les résultats de tous tes athlètes dans l'historique.</div>
+
+  <div class="fg mb8">
+    <label>Nom de la compétition</label>
+    <input id="arc-meet" placeholder="ex: Championnat FQD 2025">
+  </div>
+  <div class="f2">
+    <div class="fg">
+      <label>Date</label>
+      <input type="date" id="arc-date">
+    </div>
+    <div class="fg">
+      <label>Ville / Lieu</label>
+      <input id="arc-location" placeholder="ex: Québec, QC">
+    </div>
+  </div>
+
+  <div style="font-size:10px;font-weight:700;color:var(--di);text-transform:uppercase;letter-spacing:.8px;margin:10px 0 6px;">Résultats par athlète</div>
+  <div id="arc-athletes-list"></div>
+
+  <div class="br">
+    <button class="btn btngh" style="flex:1" onclick="closeM('m-archive')">Annuler</button>
+    <button class="btn btng" style="flex:2;background:var(--te);color:#fff;" onclick="confirmArchive()">✓ Archiver</button>
+  </div>
+</div></div>
+
+<!-- MODAL: Save/Load -->
+<div class="mbg hid" id="m-save">
+<div class="mo">
+  <div class="moti">💾 Sauvegarde / Chargement</div>
+  <div style="font-size:12px;color:var(--mu);margin-bottom:10px;">Copie ce texte pour sauvegarder, ou colle un texte sauvegardé pour charger.</div>
+  <textarea id="save-txt" style="width:100%;height:140px;background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r);color:var(--tx);font-size:11px;padding:8px;font-family:monospace;resize:none;"></textarea>
+  <div class="br">
+    <button class="btn btngh" style="flex:1" onclick="closeM('m-save')">Annuler</button>
+    <button class="btn btng" style="flex:1" onclick="copyData()">📋 Copier</button>
+    <button class="btn btng" style="flex:1;background:var(--pu);color:#000;" onclick="importData()">📂 Importer</button>
+  </div>
+</div></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// CONSTANTS & HELPERS
+// ════════════════════════════════════════════════════════════
+const CATS_H=['59 kg','66 kg','74 kg','83 kg','93 kg','105 kg','120 kg','120+ kg'];
+const CATS_F=['47 kg','52 kg','57 kg','63 kg','69 kg','76 kg','84 kg','84+ kg'];
+const WU=[{s:1,p:.40,r:'×5'},{s:2,p:.55,r:'×4'},{s:3,p:.70,r:'×3'},{s:4,p:.80,r:'×2'},{s:5,p:.875,r:'×1'},{s:6,p:.95,r:'×1'}];
+const f=v=>parseFloat(v)||0;
+const r25=v=>Math.round(v/2.5)*2.5;
+const lbs=v=>v?(v*2.2046).toFixed(1):'—';
+const fmt=v=>v||'—';
+
+function gl(tot,bw,sex){
+  if(!tot||!bw)return 0;
+  return sex==='H'?tot*(100/(1199.72839-1025.18162*Math.exp(-0.00921*bw))):tot*(100/(610.32796-1045.59282*Math.exp(-0.03048*bw)));
+}
+function confirmed(atts,res){let b=0;for(let i=0;i<atts.length;i++)if(res[i]===true&&f(atts[i])>b)b=f(atts[i]);return b||null;}
+function bestOrA1(atts,res){return confirmed(atts,res)||f(atts[0]);}
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+let S={
+  meet:{name:'',date:''},
+  athletes:[],
+  lifters:[],
+  history:[],
+  standards:{fqd:{},centraux:{},nationaux:{}},
+  curAth:0,
+  curSub:'att',
+  editIdx:-1
+};
+
+function makeAth(src={}){
+  return{
+    name:src.name||'',sex:src.sex||'H',div:src.div||'Open (24+)',
+    cat:src.cat||'83 kg',bw:src.bw||0,flight:src.flight||'A',
+    platform:src.platform||'',session:src.session||'',
+    lot:src.lot||'',
+    prSq:src.prSq||0,prBp:src.prBp||0,prDl:src.prDl||0,
+    gymSq:src.gymSq||0,gymBp:src.gymBp||0,gymDl:src.gymDl||0,
+    objSq:src.objSq||0,objBp:src.objBp||0,objDl:src.objDl||0,
+    rackSq:src.rackSq||'',rackBp:src.rackBp||'',safetyBp:src.safetyBp||'',
+    sqA:src.sqA||['','',''],sqR:src.sqR||[null,null,null],
+    bpA:src.bpA||['','',''],bpR:src.bpR||[null,null,null],
+    dlA:src.dlA||['','',''],dlR:src.dlR||[null,null,null],
+    recFqd:src.recFqd||{sq:0,bp:0,dl:0,total:0},
+    recCpu:src.recCpu||{sq:0,bp:0,dl:0,total:0},
+    recIpf:src.recIpf||{sq:0,bp:0,dl:0,total:0},
+    notesSq:src.notesSq||'',notesBp:src.notesBp||'',notesDl:src.notesDl||'',
+    tacSq:src.tacSq||0,tacBp:src.tacBp||0,tacDl:src.tacDl||0
+  };
+}
+
+// ════════════════════════════════════════════════════════════
+// SCENARIO ENGINE — all computation here
+// ════════════════════════════════════════════════════════════
+
+function rivalMaxTotal(l){
+  const sq=f(l.bestSq)||f(l.sqA3)||f(l.sqA2)||f(l.sqA1)||f(l.sqA);
+  const bp=f(l.bestBp)||f(l.bpA3)||f(l.bpA2)||f(l.bpA1)||f(l.bpA);
+  const dl=f(l.bestDl)||f(l.dlA3)||f(l.dlA2)||f(l.dlA1)||f(l.dlA);
+  return sq+bp+dl;
+}
+function rivalCurrTotal(l){
+  const sq=f(l.bestSq)||f(l.sqA);
+  const bp=f(l.bestBp)||f(l.bpA);
+  const dl=f(l.bestDl)||f(l.dlA);
+  return sq+bp+dl;
+}
+
+// 3-level tiebreak: total desc > BW asc > lot# asc
+function tiebreakLoses(rTot,rBw,rLot,myTot,myBw,myLot){
+  if(rTot!==myTot) return rTot>myTot;
+  if((rBw||999)!==(myBw||999)) return (rBw||999)<(myBw||999);
+  return (parseInt(rLot)||9999)<(parseInt(myLot)||9999);
+}
+
+function calcRank(myTot,myBw,myLot,rivals,mode){
+  if(!rivals||!rivals.length)return 1;
+  let up=0;
+  for(const r of rivals){
+    const rt=mode==='worst'?rivalMaxTotal(r):rivalCurrTotal(r);
+    if(tiebreakLoses(rt,r.bw||999,r.lot,myTot,myBw||999,myLot)) up++;
+  }
+  return up+1;
+}
+
+function getBeaters(myTot,myBw,myLot,rivals){
+  return rivals.filter(r=>{
+    const rt=rivalMaxTotal(r);
+    return tiebreakLoses(rt,r.bw||999,r.lot,myTot,myBw||999,myLot);
+  }).sort((a,b)=>rivalMaxTotal(b)-rivalMaxTotal(a));
+}
+
+function getBeaten(myTot,myBw,myLot,rivals){
+  return rivals.filter(r=>{
+    const rt=rivalMaxTotal(r);
+    return !tiebreakLoses(rt,r.bw||999,r.lot,myTot,myBw||999,myLot);
+  });
+}
+
+// Min DL to beat each rival
+function calcMinToBeat(rivals,acq,myBw,myLot){
+  return rivals.map(r=>{
+    const rMax=rivalMaxTotal(r);
+    const rBw=r.bw||999;
+    const rLot=r.lot||9999;
+    // If myBw < rBw at equal total, I win — so I only need to match
+    // If myBw >= rBw at equal total, need +2.5 to beat
+    // Also apply lot# tiebreak
+    let needTot;
+    if(myBw<rBw||(myBw===rBw&&(parseInt(myLot)||9999)<rLot)){
+      needTot=rMax; // matching total is enough (I win tiebreak)
+    } else {
+      needTot=rMax+2.5;
+    }
+    const needDl=Math.max(0,r25(needTot-acq));
+    return{rival:r,rMax,rBw,rLot,needTot,needDl,
+      feasible:needDl>0&&needDl<=350};
+  }).sort((a,b)=>a.needDl-b.needDl);
+}
+
+function priorityScore(offset,rankR,rankW,recFqd,recCpu,recIpf){
+  let s=100+Math.abs(offset)*2;
+  if(offset<-2.5)s+=20;
+  if(offset<0)s+=10;
+  if(offset>12.5)s+=25;
+  s+=(rankR-1)*8+(rankW-1)*2;
+  if(recFqd?.lift>=0)s-=18;if(recCpu?.lift>=0)s-=14;if(recIpf?.lift>=0)s-=20;
+  if(recFqd?.total>=0)s-=10;if(recCpu?.total>=0)s-=8;if(recIpf?.total>=0)s-=12;
+  if(offset===0)s-=5;
+  if(Math.abs(offset)<=2.5)s-=3;
+  return s;
+}
+
+// Global: check if a lifter has completed a given lift phase
+function liftComplete(lifter, resKey) {
+  const r = lifter[resKey] || [null, null, null];
+  if (r[2] !== null) return true;          // att3 has result
+  if (r[0] !== null && r[1] !== null) return true; // 2 results = att3 pending but 2 done
+  return false;
+}
+
+function computeAll(a,rivals){
+  try {
+  // Detect phase
+  const sqConf=confirmed(a.sqA,a.sqR);
+  const bpConf=confirmed(a.bpA,a.bpR);
+  const dlConf=confirmed(a.dlA,a.dlR);
+  // ── PHASE DETECTION based on ALL lifters in the flight ──
+  // A lift is "complete" for a lifter when their att3 has a result (✓ or ✗)
+  // The phase advances only when EVERY lifter in the flight has completed att3
+  // If no flight data: fall back to athlete's own results
+  
+  // All lifters = my athlete's lifter entry + all rivals
+  const allLifters = S.lifters; // includes my athlete if added to flight
+  
+  // liftComplete is defined globally above
+  
+  function myAthLiftComplete(resArr) {
+    // My athlete: att3 has a result, OR att2 result exists and att3 is done
+    if (resArr[2] !== null) return true;
+    // Also done if athlete has a confirmed best (bombed = all failed)
+    if (resArr[0] !== null && resArr[1] !== null && resArr[2] === null) {
+      // 2 results done, att3 not yet = still in progress
+      return false;
+    }
+    return false;
+  }
+  
+  // Check if a phase is complete across ALL flight lifters
+  function phaseCompleteInFlight(resKey) {
+    // Only consider lifters in the SAME flight as my athlete
+    const sameFlightLifters = allLifters.filter(l=>(l.flight||'A')===(a.flight||'A'));
+    if (sameFlightLifters.length === 0) {
+      // No flight data: use my athlete's own att3 result
+      return a[resKey][2] !== null;
+    }
+    // All lifters in this flight must have completed att3 for this lift
+    return sameFlightLifters.every(l => liftComplete(l, resKey));
+  }
+  
+  const sqFlightDone = phaseCompleteInFlight('sqR');
+  const bpFlightDone = phaseCompleteInFlight('bpR');
+  
+  let phase = 'sq';
+  if (sqFlightDone && bpFlightDone) phase = 'dl';
+  else if (sqFlightDone) phase = 'bp';
+
+  const cSq=bestOrA1(a.sqA,a.sqR)||0;
+  const cBp=bestOrA1(a.bpA,a.bpR)||0;
+  const cDl=bestOrA1(a.dlA,a.dlR)||0;
+  const acq=(sqConf||0)+(bpConf||0);
+
+  let tacBase=0;
+  if(phase==='sq')tacBase=a.tacSq||cSq||0;
+  if(phase==='bp')tacBase=a.tacBp||cBp||0;
+  if(phase==='dl')tacBase=a.tacDl||cDl||0;
+
+  // All offsets
+  const offsets=[-5,-2.5,0,2.5,5,7.5,10,12.5,15];
+
+  const scenarios=offsets.map(offset=>{
+    const liftKg=r25(Math.max(0,(tacBase||20)+offset));
+    let projTot=0;
+    if(phase==='sq')projTot=liftKg+(cBp||0)+(cDl||0);
+    if(phase==='bp')projTot=(sqConf||cSq||0)+liftKg+(cDl||0);
+    if(phase==='dl')projTot=acq+liftKg;
+
+    const glPts=a.bw&&projTot?gl(projTot,a.bw,a.sex):0;
+
+    const myLot=a.lot||9999;
+    const rankW=calcRank(projTot,a.bw,myLot,rivals,'worst');
+    const rankB=calcRank(projTot,a.bw,myLot,rivals,'best');
+    const rankR=calcRank(projTot,a.bw,myLot,rivals,'real');
+
+    const rk=phase;
+    const recFqd=a.recFqd[rk]?{lift:liftKg-a.recFqd[rk],total:projTot-(a.recFqd.total||0)}:null;
+    const recCpu=a.recCpu[rk]?{lift:liftKg-a.recCpu[rk],total:projTot-(a.recCpu.total||0)}:null;
+    const recIpf=a.recIpf[rk]?{lift:liftKg-a.recIpf[rk],total:projTot-(a.recIpf.total||0)}:null;
+
+    const myLotB=a.lot||9999;
+    const beaters=getBeaters(projTot,a.bw,myLotB,rivals);
+    const beaten=getBeaten(projTot,a.bw,myLotB,rivals);
+    const prio=priorityScore(offset,rankR,rankW,recFqd,recCpu,recIpf);
+
+    // PR check
+    const prVal=phase==='sq'?a.prSq:phase==='bp'?a.prBp:a.prDl;
+    const isPR=prVal&&liftKg>prVal;
+    const prGap=prVal?liftKg-prVal:null;
+
+    return{offset,liftKg,projTot,glPts,rankW,rankB,rankR,
+      recFqd,recCpu,recIpf,beaters,beaten,prio,
+      isTarget:offset===0,isPR,prGap};
+  });
+
+  const sorted=[...scenarios].sort((a,b)=>a.prio-b.prio);
+  const mtb=tacBase?calcMinToBeat(rivals,acq,a.bw||80,a.lot||9999):[]; 
+
+  // FORECASTED TOTAL = confirmed lifts + tactical targets for remaining
+  const fSq = sqConf || (phase==='sq'?tacBase:cSq) || 0;
+  const fBp = bpConf || (phase==='bp'?tacBase:cBp) || 0;
+  const fDl = dlConf || (phase==='dl'?tacBase:cDl) || 0;
+  const forecastedTotal = fSq&&fBp&&fDl ? fSq+fBp+fDl : (fSq+fBp+fDl)||0;
+  const forecastedGL = a.bw&&forecastedTotal ? gl(forecastedTotal,a.bw,a.sex) : 0;
+  const myLotF=a.lot||9999;
+  const forecastedPlaceW = forecastedTotal?calcRank(forecastedTotal,a.bw,myLotF,rivals,'worst'):null;
+  const forecastedPlaceB = forecastedTotal?calcRank(forecastedTotal,a.bw,myLotF,rivals,'best'):null;
+  const forecastedPlaceR = forecastedTotal?calcRank(forecastedTotal,a.bw,myLotF,rivals,'real'):null;
+  // Current live total (confirmed only)
+  const liveTotal = (sqConf||0)+(bpConf||0)+(dlConf||0);
+  return{scenarios,sorted,phase,tacBase,acq,sqConf,bpConf,dlConf,cSq,cBp,cDl,mtb,
+    forecastedTotal,forecastedGL,forecastedPlaceW,forecastedPlaceB,forecastedPlaceR,
+    liveTotal,fSq,fBp,fDl};
+  } catch(err) {
+    console.error('computeAll error:', err);
+    return null;
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDER: SCENARIOS
+// ════════════════════════════════════════════════════════════
+function buildForecastStrip(fTot,fGL,fpW,fpB,fpR,liveTot,fSq,fBp,fDl,sqConf,bpConf,dlConf,acq,nRivals,a){
+  function clr(p){return p===1?'rk-gold':p===2?'rk-green':p===3?'rk-blue':p>5?'rk-red':'rk-mut';}
+  let h='<div style="margin:0 12px 8px;background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r2);overflow:hidden;">';
+  h+='<div style="padding:6px 12px;background:var(--s3);border-bottom:1px solid var(--bd);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--te);">📊 TOTAL PRÉVISIONNEL &amp; CLASSEMENT FORECASTED</div>';
+  // SQ/BP/DL row
+  h+='<div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--bd);">';
+  const parts=[{lbl:'SQ prévu',v:fSq,conf:sqConf},{lbl:'BP prévu',v:fBp,conf:bpConf},{lbl:'DL prévu',v:fDl,conf:dlConf}];
+  for(let i=0;i<parts.length;i++){
+    const p=parts[i];
+    h+='<div style="padding:7px 8px;text-align:center;'+(i<2?'border-right:1px solid var(--bd);':'')+'">'; 
+    h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">'+p.lbl+'</div>';
+    h+='<div style="font-size:14px;font-weight:800;font-family:monospace;color:'+(p.conf?'var(--gr)':'var(--go)')+';">'+(p.v||'—')+(p.conf?' ✓':'')+'</div>';
+    h+='</div>';
+  }
+  h+='</div>';
+  // Totals row
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;">';
+  // Forecasted Total
+  h+='<div style="padding:8px;text-align:center;border-right:1px solid var(--bd);">';
+  h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">Forecasted Total</div>';
+  h+='<div style="font-size:20px;font-weight:900;font-family:monospace;color:var(--go);">'+(fTot||'—')+'<span style="font-size:10px;"> kg</span></div>';
+  h+='</div>';
+  // GL
+  h+='<div style="padding:8px;text-align:center;border-right:1px solid var(--bd);">';
+  h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">IPF GL prévu</div>';
+  h+='<div style="font-size:15px;font-weight:800;font-family:monospace;color:var(--te);">'+(fGL?fGL.toFixed(2):'—')+'</div>';
+  h+='</div>';
+  // Place pire
+  h+='<div style="padding:8px;text-align:center;border-right:1px solid var(--bd);">';
+  h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">🔴 Place pire cas</div>';
+  h+='<div class="'+(fpW?clr(fpW):'rk-mut')+'" style="font-size:20px;font-weight:900;font-family:monospace;">'+(fpW||'—')+'</div>';
+  h+='<div style="font-size:9px;color:var(--di);">Tous ADV réussissent</div>';
+  h+='</div>';
+  // Place mieux
+  h+='<div style="padding:8px;text-align:center;">';
+  h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">🟢 Place mieux cas</div>';
+  h+='<div class="'+(fpB?clr(fpB):'rk-mut')+'" style="font-size:20px;font-weight:900;font-family:monospace;">'+(fpB||'—')+'</div>';
+  h+='<div style="font-size:9px;color:var(--di);">Tous ADV ratent</div>';
+  h+='</div>';
+  h+='</div>';
+  // Footer
+  h+='<div style="padding:5px 12px;background:var(--s3);border-top:1px solid var(--bd);display:flex;gap:16px;flex-wrap:wrap;align-items:center;">';
+  if(liveTot){
+    h+='<span style="font-size:10px;color:var(--di);">Total confirmé: <b style="color:var(--gr);font-family:monospace;">'+liveTot+'kg</b></span>';
+  }
+  if(fpR){
+    const rCls=fpR===1?'rk-gold':fpR<=3?'rk-green':'rk-mut';
+    h+='<span style="font-size:10px;color:var(--di);">Place réaliste: <span class="'+rCls+'" style="font-weight:800;">#'+fpR+'</span></span>';
+  }
+  h+='<span style="font-size:10px;color:var(--di);">Tiebreak → BW: <b>'+(a.bw?a.bw+'kg':'—')+'</b> · Lot: <b>#'+(a.lot||'—')+'</b></span>';
+  h+='<span style="font-size:10px;color:var(--di);margin-left:auto;">'+nRivals+' adversaire'+(nRivals!==1?'s':'')+'</span>';
+  h+='</div>';
+  h+='</div>';
+  return h;
+}
+
+
+// ════════════════════════════════════════════════════════════
+// STANDARDS — Qualification standards per federation/level
+// ════════════════════════════════════════════════════════════
+
+// Build a unique key for div+sex
+function stdKey(div, sex) {
+  const divMap = {
+    'Open (24+)':'open','Junior (19-23)':'junior','Sub-Junior (14-18)':'subjunior',
+    'Master I (40-49)':'master1','Master II (50-59)':'master2',
+    'Master III (60-69)':'master3','Master IV (70+)':'master4'
+  };
+  const d = divMap[div] || div.toLowerCase().replace(/[^a-z0-9]/g,'');
+  return d+'_'+(sex||'H').toLowerCase();
+}
+
+// Build category key from cat string e.g. "83 kg" → "83"
+function catKey(cat) {
+  return String(cat||'').replace(/[^0-9+]/g,'') || cat;
+}
+
+// Get standard for a given athlete + level
+function getStandard(level, div, sex, cat) {
+  if(!S.standards[level]) return null;
+  const dk = stdKey(div, sex);
+  const ck = catKey(cat);
+  return S.standards[level][dk]?.[ck] || null;
+}
+
+// Set standard value
+function setStandard(level, div, sex, cat, field, val) {
+  if(!S.standards[level]) S.standards[level]={};
+  const dk = stdKey(div, sex);
+  const ck = catKey(cat);
+  if(!S.standards[level][dk]) S.standards[level][dk]={};
+  if(!S.standards[level][dk][ck]) S.standards[level][dk][ck]={sq:0,bp:0,dl:0,total:0};
+  S.standards[level][dk][ck][field] = parseFloat(val)||0;
+  // Recalculate total if sq+bp+dl all set
+  const s = S.standards[level][dk][ck];
+  if(field!=='total' && s.sq&&s.bp&&s.dl) s.total=s.sq+s.bp+s.dl;
+  renderStandards();
+  saveToLocal();
+}
+
+function renderStandards() {
+  const el = document.getElementById('sp-std');
+  if(!el) return;
+  const a = S.athletes[S.curAth];
+  if(!a) { el.innerHTML='<div class="empty p"><div class="ei">🏆</div><p>Ajoute un athlète dans Setup</p></div>'; return; }
+
+  const bSq = confirmed(a.sqA,a.sqR)||f(a.sqA[0])||0;
+  const bBp = confirmed(a.bpA,a.bpR)||f(a.bpA[0])||0;
+  const bDl = confirmed(a.dlA,a.dlR)||f(a.dlA[0])||0;
+  const curTot = bSq&&bBp&&bDl ? bSq+bBp+bDl : 0;
+  // Forecasted total using tac targets
+  const fSq = confirmed(a.sqA,a.sqR)||a.tacSq||f(a.sqA[0])||0;
+  const fBp = confirmed(a.bpA,a.bpR)||a.tacBp||f(a.bpA[0])||0;
+  const fDl = confirmed(a.dlA,a.dlR)||a.tacDl||f(a.dlA[0])||0;
+  const forecastTot = fSq&&fBp&&fDl ? fSq+fBp+fDl : 0;
+
+  const levels = [
+    {key:'fqd',     label:'🏅 Provinciaux (FQD)',    color:'var(--fqd)'},
+    {key:'centraux',label:'🏆 Centraux (CPU)',        color:'var(--cpu)'},
+    {key:'nationaux',label:'🌟 Nationaux (CPU)',      color:'var(--ipf)'}
+  ];
+
+  const fields = [
+    {k:'sq', label:'Squat', cur:bSq},
+    {k:'bp', label:'Bench', cur:bBp},
+    {k:'dl', label:'Deadlift', cur:bDl},
+    {k:'total', label:'Total', cur:curTot}
+  ];
+
+  let h = '<div style="padding:10px 12px;">';
+
+  // Athlete context banner
+  h += '<div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:8px 12px;margin-bottom:12px;">';
+  h += '<div style="font-size:12px;font-weight:700;">'+a.name+'</div>';
+  h += '<div style="font-size:11px;color:var(--mu);margin-top:2px;">'+a.div+' · '+a.cat+' · '+a.sex+'</div>';
+  if(curTot) h += '<div style="font-size:11px;color:var(--go);margin-top:2px;">Total actuel: <b>'+curTot+'kg</b></div>';
+  if(forecastTot&&forecastTot!==curTot) h += '<div style="font-size:11px;color:var(--te);margin-top:1px;">Total forecasted: <b>'+forecastTot+'kg</b></div>';
+  h += '</div>';
+
+  // One card per level
+  for(const lv of levels) {
+    const std = getStandard(lv.key, a.div, a.sex, a.cat);
+
+    h += '<div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);">';
+
+    // Header
+    h += '<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--s2);border-bottom:1px solid var(--bd);">';
+    h += '<span style="font-size:12px;font-weight:800;color:'+lv.color+';">'+lv.label+'</span>';
+
+    // Qualification status badge
+    if(std&&std.total&&curTot) {
+      const qualified = curTot>=std.total;
+      const forecasted = !qualified && forecastTot>=std.total;
+      if(qualified) h += '<span style="background:var(--grbg);border:1px solid var(--grbr);color:var(--gr);font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;">✅ QUALIFIÉ</span>';
+      else if(forecasted) h += '<span style="background:var(--go2);border:1px solid var(--go3);color:var(--go);font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;">⚡ FORECASTED</span>';
+      else h += '<span style="background:var(--rebg);border:1px solid var(--rebr);color:var(--re);font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;">⏳ EN COURS</span>';
+    }
+    h += '</div>';
+
+    h += '<div style="padding:10px 12px;">';
+
+    // Fields grid
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:8px;">';
+    for(const fd of fields) {
+      const stdVal = std?std[fd.k]:0;
+      const cur = fd.cur;
+      const diff = stdVal&&cur ? cur-stdVal : null;
+      const forecDiff = stdVal&&forecastTot&&fd.k==='total' ? forecastTot-stdVal : null;
+
+      h += '<div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:7px 6px;">';
+      h += '<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:4px;">'+fd.label+'</div>';
+
+      // Standard input
+      h += '<input type="number" step="0.5" value="'+(stdVal||'')+'" placeholder="—" ';
+      h += 'onchange="setStandard(\''+lv.key+'\',\''+a.div+'\',\''+a.sex+'\',\''+a.cat+'\',\''+fd.k+'\',this.value)" ';
+      h += 'onblur="setStandard(\''+lv.key+'\',\''+a.div+'\',\''+a.sex+'\',\''+a.cat+'\',\''+fd.k+'\',this.value)" ';
+      h += 'style="width:100%;background:var(--s1);border:1px solid var(--bd2);border-radius:5px;color:var(--go);font-size:13px;font-weight:800;text-align:center;font-family:monospace;padding:4px 2px;margin-bottom:4px;">';
+
+      // Gap indicator
+      if(diff!==null) {
+        if(diff>=0) h += '<div style="font-size:10px;color:var(--gr);font-weight:700;text-align:center;">+'+diff.toFixed(1)+'kg ✓</div>';
+        else h += '<div style="font-size:10px;color:var(--re);text-align:center;">▲'+Math.abs(diff).toFixed(1)+'kg</div>';
+      } else if(stdVal) {
+        h += '<div style="font-size:10px;color:var(--di);text-align:center;">—</div>';
+      }
+
+      // Forecast gap for total
+      if(fd.k==='total'&&forecDiff!==null&&diff!==null&&diff<0) {
+        if(forecDiff>=0) h += '<div style="font-size:9px;color:var(--te);text-align:center;">forecast: ✓</div>';
+        else h += '<div style="font-size:9px;color:var(--mu);text-align:center;">forecast: ▲'+Math.abs(forecDiff).toFixed(1)+'kg</div>';
+      }
+
+      h += '</div>';
+    }
+    h += '</div>';
+
+    // Progress bar for total
+    if(std&&std.total&&(curTot||forecastTot)) {
+      const pctCur = Math.min(100, Math.round((curTot/std.total)*100));
+      const pctFor = Math.min(100, Math.round((forecastTot/std.total)*100));
+      h += '<div style="margin-top:4px;">';
+      h += '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mu);margin-bottom:3px;">';
+      h += '<span>0</span><span>Standard: '+std.total+'kg</span>';
+      h += '</div>';
+      h += '<div style="background:var(--s3);border-radius:4px;height:8px;position:relative;overflow:hidden;">';
+      if(forecastTot&&forecastTot>curTot) {
+        h += '<div style="position:absolute;left:0;top:0;height:100%;width:'+pctFor+'%;background:var(--go);opacity:.4;border-radius:4px;"></div>';
+      }
+      h += '<div style="position:absolute;left:0;top:0;height:100%;width:'+pctCur+'%;background:'+(pctCur>=100?'var(--gr)':'var(--bl)')+';border-radius:4px;transition:width .3s;"></div>';
+      h += '</div>';
+      h += '<div style="font-size:10px;color:var(--mu);margin-top:2px;">'+pctCur+'% atteint'+(forecastTot&&forecastTot!==curTot?' · '+pctFor+'% forecasted':'')+'</div>';
+      h += '</div>';
+    }
+
+    h += '</div></div>';
+  }
+
+  // Info note
+  h += '<div style="font-size:10px;color:var(--di);margin-top:4px;margin-bottom:16px;">✏️ Les standards sont sauvegardés automatiquement. Modifie les valeurs directement dans les cellules. Chaque athlète voit uniquement ses standards ('+a.div+' · '+a.cat+' · '+a.sex+').</div>';
+  h += '</div>';
+
+  el.innerHTML = h;
+}
+
+function renderScenarios(){
+  renderAthBar('ab-sc');
+  const el=document.getElementById('sp-sc');
+  const a=S.athletes[S.curAth];
+  if(!a){el.innerHTML=`<div class="empty p"><div class="ei">⚡</div><p>Ajoute des athlètes dans Setup</p></div>`;return;}
+
+  // Rivals = lifters in the SAME flight as current athlete, excluding the athlete themselves
+  const curAthFlight = a.flight || 'A';
+  const rivals=S.lifters.filter(l=>(l.flight||'A')===curAthFlight && l.myAthIdx!==S.curAth);
+  const R=computeAll(a,rivals);
+  if(!R||!R.tacBase){
+    el.innerHTML=`<div class="empty p"><div class="ei">⚡</div><p>Saisis l'Att.1 dans Game Plan pour activer les scénarios</p></div>`;return;
+  }
+
+  const {scenarios,sorted,phase,tacBase,acq,sqConf,bpConf,dlConf,cSq,cBp,cDl,mtb,forecastedTotal,forecastedGL,forecastedPlaceW,forecastedPlaceB,forecastedPlaceR,liveTotal,fSq,fBp,fDl}=R;
+
+  // Phase color
+  const phClr=phase==='dl'?'var(--re)':phase==='bp'?'var(--bl)':'var(--go)';
+  const phLbl=phase==='dl'?'🏋 DEADLIFT EN COURS — MOUVEMENT CRITIQUE':phase==='bp'?'💪 BENCH PRESS EN COURS':'🦵 SQUAT EN COURS';
+  
+  // Progress: how many lifters have completed att3 for current phase
+  const curResKey=phase==='sq'?'sqR':phase==='bp'?'bpR':'dlR';
+  const flightRivals=S.lifters.filter(l=>(l.flight||'A')===(a.flight||'A'));
+  const totalLifters=flightRivals.length;
+  const doneLifters=totalLifters>0?S.lifters.filter(l=>liftComplete(l,curResKey)).length:0;
+  const progressTxt=totalLifters>0?` — ${doneLifters}/${totalLifters} leveurs terminés`:'';
+
+  let h=`<div class="phase-banner" style="background:linear-gradient(90deg,rgba(0,0,0,0) 0%,${phClr}18 100%);border-bottom:1px solid ${phClr}44;">
+    <div class="phase-dot" style="background:${phClr}"></div>
+    <div>
+      <div class="phase-title" style="color:${phClr}">${phLbl}</div>
+      <div class="phase-sub">${a.name} · ${a.cat} · ${a.sex} · Flight ${a.flight}${a.bw?' · '+a.bw+' kg':''}</div>
+    </div>
+  </div>`;
+
+  // Status strip
+  h+=`<div class="p" style="padding-bottom:4px;">
+  <div class="ss4">
+    <div class="sc"><div class="sl">SQ${sqConf?'✓':''}</div><div class="sv sm${!sqConf?' mu':''}">${sqConf||fmt(a.sqA[0])}</div></div>
+    <div class="sc"><div class="sl">BP${bpConf?'✓':''}</div><div class="sv sm${!bpConf?' mu':''}">${bpConf||fmt(a.bpA[0])}</div></div>
+    <div class="sc"><div class="sl">DL${dlConf?'✓':''}</div><div class="sv sm${!dlConf?' mu':''}">${dlConf||fmt(a.dlA[0])}</div></div>
+    <div class="sc hi"><div class="sl">TOTAL</div><div class="sv sm">${sqConf&&bpConf&&dlConf?sqConf+bpConf+dlConf:'—'}</div></div>
+  </div>
+  ${acq?`<div style="font-size:11px;color:var(--te);margin-bottom:4px;">✅ SQ+BP acquis: <b>${acq}kg</b>${a.bw?` · GL coeff: <b>${gl(1,a.bw,a.sex).toFixed(4)}</b>`:''}
+    <span style="font-size:10px;color:var(--di);margin-left:8px;">Rivals: ${rivals.length}</span>
+  </div>`:''}
+
+  <!-- Tactical target input -->
+  <div style="display:flex;align-items:center;gap:10px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:8px 12px;margin-bottom:8px;">
+    <span style="font-size:11px;color:var(--mu);white-space:nowrap;">${phase==='sq'?'🦵':phase==='bp'?'💪':'🏋'} Charge prévue:</span>
+    <input class="tac-inp" type="number" step="2.5" value="${tacBase||''}" placeholder="—"
+      oninput="setTacFromSc('tac${phase.charAt(0).toUpperCase()+phase.slice(1)}',this.value)"
+      style="width:80px;">
+    <span style="font-size:11px;color:var(--di);">kg</span>
+    ${tacBase?`<span style="font-size:11px;color:var(--di);">${lbs(tacBase)} lbs</span>`:''}
+    <span style="flex:1;text-align:right;font-size:10px;color:var(--di);">${rivals.length} adversaire${rivals.length!==1?'s':''} dans flight</span>
+  </div>
+  </div>`;
+
+  // ── FORECASTED TOTAL / PLACE strip
+  h+=buildForecastStrip(forecastedTotal,forecastedGL,forecastedPlaceW,forecastedPlaceB,forecastedPlaceR,liveTotal,fSq,fBp,fDl,sqConf,bpConf,dlConf,acq,rivals.length,a);
+
+  // ── MIN TO BEAT section (if DL phase and rivals exist)
+  if(mtb.length>0){
+    h+=`<div style="padding:0 12px 8px;">
+      <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">
+        🎯 MINIMUM REQUIS POUR DÉPASSER CHAQUE ADVERSAIRE
+      </div>
+      ${mtb.slice(0,8).map(m=>{
+        const diffFromTac=m.needDl-tacBase;
+        const cls=diffFromTac<=0?'easy':diffFromTac<=10?'':diffFromTac<=20?'hard':'imp';
+        const icon=diffFromTac<=0?'✅':diffFromTac<=5?'🟡':diffFromTac<=15?'🟠':'🔴';
+        return`<div class="mtb-row" style="${diffFromTac<=0?'border-color:var(--grbr);background:var(--grbg);':''}">
+          <div class="mtb-name">${icon} ${m.rival.name}<span style="font-size:10px;color:var(--di);margin-left:6px;">max: ${m.rMax}kg</span></div>
+          <div>
+            <span style="font-size:10px;color:var(--di);">DL min: </span>
+            <span class="mtb-need ${cls}">${m.needDl}kg</span>
+            ${diffFromTac!==0?`<span style="font-size:10px;color:${diffFromTac<0?'var(--gr)':'var(--re)'};">${diffFromTac>0?'+':''}${diffFromTac}kg vs prévu</span>`:'<span style="font-size:10px;color:var(--go);">= prévu</span>'}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  // ── RECOMMENDED SCENARIOS (top 4)
+  h+=`<div style="padding:0 12px 4px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mu);margin-bottom:6px;">
+      ⚡ SCÉNARIOS RECOMMANDÉS — par ordre de priorité
+    </div>
+  </div>`;
+
+  const topN=sorted.slice(0,5);
+  topN.forEach((sc,idx)=>{
+    h+=renderScenarioCard(sc,idx,a,rivals,phase,acq,tacBase);
+  });
+
+  // ── ALL SCENARIOS TABLE (compact)
+  h+=`<div style="padding:0 12px 8px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mu);margin:10px 0 6px;">
+      📊 TOUS LES SCÉNARIOS — vue tableau
+    </div>
+    <div style="overflow-x:auto;">
+    <table style="border-collapse:collapse;font-size:11px;width:100%;min-width:500px;">
+      <thead>
+        <tr style="background:var(--s2);">
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:left;color:var(--di);font-size:9px;text-transform:uppercase;">Option</th>
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;color:var(--di);font-size:9px;text-transform:uppercase;">${phase==='sq'?'SQ':phase==='bp'?'BP':'DL'} kg</th>
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;color:var(--di);font-size:9px;text-transform:uppercase;">Total</th>
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;color:var(--di);font-size:9px;text-transform:uppercase;">GL</th>
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;color:var(--di);font-size:9px;text-transform:uppercase;">🔴 Pire</th>
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;color:var(--di);font-size:9px;text-transform:uppercase;">🟢 Mieux</th>
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;color:var(--di);font-size:9px;text-transform:uppercase;">FQD</th>
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;color:var(--di);font-size:9px;text-transform:uppercase;">CPU</th>
+          <th style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;color:var(--di);font-size:9px;text-transform:uppercase;">IPF</th>
+        </tr>
+      </thead>
+      <tbody>
+      ${scenarios.map(sc=>{
+        const isTop=sorted.indexOf(sc)===0;
+        const offStr=sc.offset===0?'🎯 Prévu':sc.offset>0?`+${sc.offset}`:sc.offset;
+        return`<tr style="${sc.isTarget?'background:rgba(245,197,24,.05);':isTop?'background:rgba(34,197,94,.04);':''}">
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);">
+            <span style="font-size:10px;font-weight:700;color:${sc.offset===0?'var(--go)':sc.offset<0?'var(--re)':sc.offset<=5?'var(--bl)':'var(--or)'}">${offStr}</span>
+          </td>
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;font-family:monospace;font-weight:800;color:var(--go);">${sc.liftKg}</td>
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;font-family:monospace;font-weight:700;">${sc.projTot}</td>
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;font-family:monospace;color:var(--te);font-size:11px;">${sc.glPts?sc.glPts.toFixed(2):'—'}</td>
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;">${rankB2(sc.rankW)}</td>
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;">${rankB2(sc.rankB)}</td>
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;">${recMini(sc.recFqd,'FQD')}</td>
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;">${recMini(sc.recCpu,'CPU')}</td>
+          <td style="padding:5px 8px;border-bottom:1px solid var(--bd);text-align:center;">${recMini(sc.recIpf,'IPF')}</td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table></div>
+    <div style="font-size:10px;color:var(--di);margin-top:6px;">🔴 Pire = tous adversaires réussissent max · 🟢 Mieux = tous échouent · Tiebreak par poids corporel</div>
+  </div>
+  <div style="height:20px;"></div>`;
+
+  el.innerHTML=h;
+}
+
+function renderScenarioCard(sc,idx,a,rivals,phase,acq,tacBase){
+  const prioCls=['prio-1','prio-2','prio-3','prio-4','prio-5'];
+  const prioLabels=['🥇 #1 RECOMMANDÉ','🥈 #2 Option','🥉 #3 Option','📌 #4 Option','📍 #5 Option'];
+  const cls=prioCls[idx]||'prio-n';
+  const lbl=prioLabels[idx]||`#${idx+1}`;
+
+  const offStr=sc.offset===0?'🎯 Prévu (0)':sc.offset>0?`⬆ +${sc.offset}`:sc.offset===-2.5?'⬇ -2.5':`⬇ ${sc.offset}`;
+  const offCls=sc.offset<0?'of-down':sc.offset===0?'of-0':sc.offset<=5?'of-up':'of-far';
+
+  // Recommendation text
+  const reco=genRecoText(sc,a,phase,rivals,tacBase);
+
+  // Block border class
+  const blockCls=idx===0?'scen-block is-top':sc.isTarget?'scen-block is-target':sc.offset>10?'scen-block is-risk':'scen-block';
+
+  let h=`<div class="sc-wrap" style="padding-bottom:0;">
+    <div class="prio-row">
+      <span class="${cls} prio-badge">${lbl}</span>
+      ${sc.isPR?`<span style="background:rgba(245,197,24,.2);border:1px solid var(--go3);color:var(--go);padding:3px 8px;border-radius:5px;font-size:10px;font-weight:800;">🏆 NOUVEAU PR (+${sc.prGap}kg)</span>`:''}
+      ${sc.recFqd?.lift>=0||sc.recCpu?.lift>=0||sc.recIpf?.lift>=0?`<span style="background:rgba(34,197,94,.18);border:1px solid var(--grbr);color:var(--gr);padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;">🏅 RECORD</span>`:''}
+    </div>
+  </div>
+  <div class="${blockCls}" style="margin:0 12px 10px;">
+
+    <!-- HEAD -->
+    <div class="scen-head">
+      <div>
+        <div class="scen-kg">${sc.liftKg} <span class="scen-lbs">kg</span></div>
+        <div class="scen-lbs">${lbs(sc.liftKg)} lbs</div>
+      </div>
+      <span class="scen-offset ${offCls}">${offStr}</span>
+      <div class="scen-reco">
+        <div class="reco-txt">${reco.title}</div>
+        <div class="reco-sub">${reco.sub}</div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="scen-body">
+
+      <!-- KEY STATS -->
+      <div class="scen-grid">
+        <div class="scen-cell">
+          <div class="sc-lbl">Total projeté</div>
+          <div class="sc-val go">${sc.projTot} kg</div>
+        </div>
+        <div class="scen-cell">
+          <div class="sc-lbl">IPF GL Points</div>
+          <div class="sc-val te">${sc.glPts?sc.glPts.toFixed(2):'—'}</div>
+        </div>
+        <div class="scen-cell">
+          <div class="sc-lbl">vs Charge prévue</div>
+          <div class="sc-val ${sc.offset>=0?'gr':'re'}">${sc.offset>=0?'+':''}${sc.offset} kg</div>
+        </div>
+      </div>
+
+      <!-- RANK -->
+      <div class="rank-row">
+        <div class="rank-cell">
+          <div class="rank-lbl">🔴 Rang pire cas</div>
+          <div class="rank-num ${rankColor(sc.rankW)}">${sc.rankW}</div>
+          <div class="rank-sub">Tous ADV réussissent</div>
+        </div>
+        <div class="rank-cell">
+          <div class="rank-lbl">📊 Rang réaliste</div>
+          <div class="rank-num ${rankColor(sc.rankR)}">${sc.rankR}</div>
+          <div class="rank-sub">Basé sur totaux actuels</div>
+        </div>
+        <div class="rank-cell">
+          <div class="rank-lbl">🟢 Rang mieux cas</div>
+          <div class="rank-num ${rankColor(sc.rankB)}">${sc.rankB}</div>
+          <div class="rank-sub">Tous ADV ratent</div>
+        </div>
+      </div>
+
+      <!-- RIVALS who beat / beaten -->
+      ${renderRivalsSection(sc,rivals)}
+
+      <!-- RECORDS -->
+      ${renderRecSection(sc,a,phase)}
+
+    </div>
+  </div>`;
+  return h;
+}
+
+function renderRivalsSection(sc,rivals){
+  if(!rivals.length)return`<div style="font-size:11px;color:var(--di);margin-bottom:6px;">Aucun adversaire dans le flight — Ajoute des leveurs dans l'onglet Flight</div>`;
+  let h='';
+
+  if(sc.beaters.length>0){
+    h+=`<div class="rivals-section">
+      <div class="rivals-title" style="color:var(--re);">🔴 Adversaires qui te dépassent (${sc.beaters.length})</div>
+      ${sc.beaters.slice(0,4).map(r=>{
+        const rt=rivalMaxTotal(r);
+        const diff=rt-sc.projTot;
+        return`<div class="rival-row above">
+          <span class="rival-name">${r.name}</span>
+          <span class="rival-tot re">${rt}kg</span>
+          <span class="rival-diff re">+${diff.toFixed(1)}kg devant toi</span>
+        </div>`;
+      }).join('')}
+      ${sc.beaters.length>4?`<div style="font-size:10px;color:var(--di);padding:3px 8px;">+${sc.beaters.length-4} autres</div>`:''}
+    </div>`;
+  }
+
+  if(sc.beaten.length>0){
+    h+=`<div class="rivals-section">
+      <div class="rivals-title" style="color:var(--gr);">🟢 Adversaires que tu dépasses (${sc.beaten.length})</div>
+      ${sc.beaten.slice(0,3).map(r=>{
+        const rt=rivalMaxTotal(r);
+        const diff=sc.projTot-rt;
+        return`<div class="rival-row below">
+          <span class="rival-name">${r.name}</span>
+          <span class="rival-tot gr">${rt}kg</span>
+          <span class="rival-diff gr">+${diff.toFixed(1)}kg devant ${r.name.split(' ')[0]}</span>
+        </div>`;
+      }).join('')}
+      ${sc.beaten.length>3?`<div style="font-size:10px;color:var(--di);padding:3px 8px;">+${sc.beaten.length-3} autres battus</div>`:''}
+    </div>`;
+  }
+
+  if(!sc.beaters.length&&!sc.beaten.length){
+    h+=`<div style="font-size:11px;color:var(--di);margin-bottom:6px;">—</div>`;
+  }
+
+  return h;
+}
+
+function renderRecSection(sc,a,phase){
+  const recs=[
+    {label:'FQD',data:sc.recFqd,color:'var(--fqd)'},
+    {label:'CPU',data:sc.recCpu,color:'var(--cpu)'},
+    {label:'IPF',data:sc.recIpf,color:'var(--ipf)'}
+  ];
+  const hasAny=recs.some(r=>r.data!==null);
+  if(!hasAny)return`<div style="font-size:11px;color:var(--di);margin-bottom:6px;">Aucun record de référence — Ajoute-les dans l'onglet Records</div>`;
+
+  let h=`<div class="rec-row-sc">`;
+  for(const r of recs){
+    if(!r.data)continue;
+    const liftCls=r.data.lift>=0?'beat':r.data.lift>=-5?'close':'far';
+    const totCls=r.data.total>=0?'beat':r.data.total>=-20?'close':'far';
+    h+=`<div class="rec-tag2 ${liftCls}">
+      <span style="color:${r.color};font-weight:800;">${r.label}</span>
+      <span>lift: ${r.data.lift>=0?'+':''}${r.data.lift.toFixed(1)}kg</span>
+    </div>
+    <div class="rec-tag2 ${totCls}">
+      <span style="color:${r.color};font-size:9px;">total:</span>
+      <span>${r.data.total>=0?'+':''}${r.data.total.toFixed(1)}kg</span>
+    </div>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
+function genRecoText(sc,a,phase,rivals,tacBase){
+  const titles={
+    '-5': {title:'Très conservateur — sécurité maximale', sub:'Uniquement si tu ressens une blessure ou grande fatigue'},
+    '-2.5':{title:'Conservateur — priorise la réussite', sub:'Si l\'athlète montre des signes de fatigue ou d\'hésitation'},
+    '0':  {title:'Plan prévu — exécution du game plan', sub:'Conforme à la stratégie pré-compétition'},
+    '2.5':{title:'Légèrement agressif — bonne tentative', sub:'Si l\'attempt précédent était facile et technique parfaite'},
+    '5':  {title:'Agressif — vise un meilleur classement', sub:'Seulement si tu te sens très bien aujourd\'hui'},
+    '7.5':{title:'Très agressif — journée exceptionnelle', sub:'Réservé aux conditions parfaites et grande forme'},
+    '10': {title:'Maximum — attempt PR ou record', sub:'Risque élevé — seulement si position déjà assurée'},
+    '12.5':{title:'Extrême — PR maximal', sub:'⚠ Très risqué — score à la baisse si raté'},
+    '15': {title:'Hors limite — PR absolu', sub:'⚠ À éviter sauf objectif précis de record'},
+  };
+  const key=String(sc.offset);
+  let base=titles[key]||{title:`Option +${sc.offset}kg`,sub:''};
+
+  // Contextual additions
+  let extras=[];
+  if(sc.rankW===1)extras.push('→ Mène au 1er rang même dans le pire cas');
+  else if(sc.rankW<=3)extras.push(`→ Podium assuré (rang ${sc.rankW} pire cas)`);
+  if(sc.isPR)extras.push(`→ Nouveau PR personnel (+${sc.prGap}kg)`);
+  if(sc.recFqd?.lift>=0)extras.push('→ Bat le record FQD');
+  if(sc.recCpu?.lift>=0)extras.push('→ Bat le record CPU');
+  if(sc.recIpf?.lift>=0)extras.push('→ Bat le record IPF');
+  if(sc.beaters.length===0)extras.push('→ Aucun adversaire devant toi (meilleur cas)');
+
+  if(extras.length>0)base.sub=extras.join(' · ');
+  return base;
+}
+
+function rankColor(r){
+  if(r===1)return'rk-gold';if(r<=2)return'rk-green';if(r<=3)return'rk-blue';
+  if(r>5)return'rk-red';return'rk-mut';
+}
+
+function rankB2(r){
+  if(r==='?')return'<span class="di">—</span>';
+  const cls=r===1?'rk-gold':r===2?'rk-green':r===3?'rk-blue':r>5?'rk-red':'rk-mut';
+  return`<span style="font-family:monospace;font-weight:800;" class="${cls}">${r}</span>`;
+}
+
+function recMini(rec,fed){
+  if(!rec)return'<span class="di">—</span>';
+  const cls=rec.lift>=0?'go':rec.lift>=-5?'go':'di';
+  return`<span class="${cls}" style="font-size:10px;font-family:monospace;">${rec.lift>=0?'+':''}${rec.lift.toFixed(0)}</span>`;
+}
+
+function setTacFromSc(key,val){
+  S.athletes[S.curAth][key]=parseFloat(val)||0;
+  renderScenarios();
+  saveToLocal();
+}
+
+// ════════════════════════════════════════════════════════════
+// GAME PLAN
+// ════════════════════════════════════════════════════════════
+function renderGP(){
+  renderAthBar('ab-gp');
+  if(!S.athletes.length){
+    ['att','wu','rec'].forEach(s=>document.getElementById('sp-'+s).innerHTML=`<div class="empty p"><div class="ei">🏋</div><p>Ajoute des athlètes</p></div>`);
+    return;
+  }
+  renderAtt();renderWu();renderRec();
+  if(S.curSub==='std') renderStandards();
+}
+
+
+// Build attempt option rows — tap kg to open numpad, no inline inputs
+function buildOptRows(a,aKey,rKey,v2a,v2b,v2c,v3a,v3b,v3c,atts,res,totFor,prG){
+  const sel2=atts[1]?parseFloat(atts[1]):null;
+  const sel3=atts[2]?parseFloat(atts[2]):null;
+
+  const att2Done=res[1]!==null;
+  const att3Done=res[2]!==null;
+  const att2Status=res[1]===true?'✓ Réussi':res[1]===false?'✗ Raté':atts[1]?'Sélectionnée':'Choisir';
+  const att3Status=res[2]===true?'✓ Réussi':res[2]===false?'✗ Raté':atts[2]?'Sélectionnée':'Choisir';
+  const att2Clr=res[1]===true?'var(--gr)':res[1]===false?'var(--re)':atts[1]?'var(--go)':'var(--di)';
+  const att3Clr=res[2]===true?'var(--gr)':res[2]===false?'var(--re)':atts[2]?'var(--go)':'var(--di)';
+
+  const groups=[
+    {grp:2,label:'2e TENTATIVE',status:att2Status,clr:att2Clr,kg:atts[1],attIdx:1,done:att2Done,
+     rows:[{l:'2a',v:v2a,ok:'opt2a_'+aKey},{l:'2b',v:v2b,ok:'opt2b_'+aKey},{l:'2c',v:v2c,ok:'opt2c_'+aKey}]},
+    {grp:3,label:'3e TENTATIVE',status:att3Status,clr:att3Clr,kg:atts[2],attIdx:2,done:att3Done,
+     rows:[{l:'3a',v:v3a,ok:'opt3a_'+aKey},{l:'3b',v:v3b,ok:'opt3b_'+aKey},{l:'3c',v:v3c,ok:'opt3c_'+aKey}]}
+  ];
+
+  let html='';
+
+  for(const g of groups){
+    const selKg=g.grp===2?sel2:sel3;
+    const attIdx=g.attIdx;
+    const curRes=res[attIdx];
+
+    // Group header
+    html+='<tr style="background:var(--s2);border-top:2px solid var(--bd2);">';
+    html+='<td colspan="6" style="padding:6px 10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:'+g.clr+';">';
+    html+=g.label+' <span style="font-size:10px;font-weight:500;">'+g.status+'</span>';
+    if(g.kg) html+=' <span style="font-family:monospace;font-weight:800;font-size:13px;color:var(--go);margin-left:6px;">'+g.kg+'kg</span>';
+    html+='</td></tr>';
+
+    // Option rows
+    for(const o of g.rows){
+      const isSelected=selKg!==null&&o.v!==null&&o.v===selKg;
+      const canResult=isSelected&&o.v;
+      const t=totFor(o.v);
+
+      let rowBg='',rowBl='';
+      if(isSelected){
+        if(curRes===true){rowBg='background:rgba(34,197,94,.18);';rowBl='border-left:4px solid var(--gr),';}
+        else if(curRes===false){rowBg='background:rgba(220,38,38,.15);';rowBl='border-left:4px solid var(--re),';}
+        else{rowBg='background:rgba(184,134,11,.10);';rowBl='border-left:4px solid var(--go),';}
+      }
+
+      html+='<tr style="'+rowBg+'">';
+
+      // Label
+      html+='<td style="padding:6px 8px;font-weight:800;font-size:12px;color:'+(isSelected?'var(--go)':'var(--mu)')+';">'+o.l+'</td>';
+
+      // Kg — tap to open numpad (large touch target, no inline input)
+      // Show custom if overridden, else suggestion
+      const dispKg=o.v!==null?o.v:'—';
+      const isCustom=a[o.ok]&&a[o.ok]!==o.v;
+      html+='<td style="padding:4px 6px;">';
+      html+='<button onclick="openOptNP(\''+aKey+'\',\''+o.ok+'\',\''+o.l+'\','+g.grp+','+o.v+')" ';
+      html+='style="font-family:monospace;font-weight:900;font-size:16px;';
+      html+='color:'+(isSelected?'var(--go)':'var(--tx)')+';';
+      html+='background:'+(isSelected?'rgba(184,134,11,.12)':'var(--s3)')+';';
+      html+='border:1px solid '+(isSelected?'var(--go3)':'var(--bd2)')+';';
+      html+='border-radius:6px;padding:6px 12px;cursor:pointer;touch-action:manipulation;min-width:70px;">'+dispKg+'</button>';
+      html+='</td>';
+
+      // lbs
+      html+='<td style="padding:6px 6px;font-family:monospace;color:var(--di);font-size:11px;">'+(o.v?((o.v*2.2046).toFixed(1)):'—')+'</td>';
+
+      // Total
+      html+='<td style="padding:6px 6px;font-family:monospace;font-weight:600;'+(t?'color:var(--tx)':'color:var(--di)')+';">'+(t||'—')+'</td>';
+
+      // vs PR
+      html+='<td style="padding:6px 6px;">'+prG(o.v)+'</td>';
+
+      // Select + Result buttons
+      html+='<td style="padding:4px 6px;">';
+      if(o.v){
+        if(!isSelected){
+          html+='<button onclick="selectAtt(\''+aKey+'\',\''+o.l+'\','+g.grp+','+o.v+')" ';
+          html+='style="background:var(--s3);color:var(--mu);border:1px solid var(--bd2);border-radius:5px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation;">Choisir</button>';
+        } else if(canResult){
+          html+='<div style="display:flex;gap:4px;">';
+          html+='<button class="bok'+(curRes===true?' sel':'')+'" style="padding:6px 14px;font-size:15px;font-weight:800;touch-action:manipulation;" onclick="setRes(\''+rKey+'\','+attIdx+',true)">✓</button>';
+          html+='<button class="bno'+(curRes===false?' sel':'')+'" style="padding:6px 14px;font-size:15px;font-weight:800;touch-action:manipulation;" onclick="setRes(\''+rKey+'\','+attIdx+',false)">✗</button>';
+          html+='</div>';
+        } else {
+          html+='<span style="color:var(--gr);font-weight:700;font-size:12px;">'+att2Status+'</span>';
+        }
+      } else {
+        html+='<span style="color:var(--di);font-size:11px;">—</span>';
+      }
+      html+='</td>';
+      html+='</tr>';
+    }
+  }
+  return html;
+}
+
+// Open numpad for option editing (replaces inline input)
+function openOptNP(aKey,optKey,optLabel,grp,currentV){
+  const a=S.athletes[S.curAth];
+  const attIdx=grp===2?1:2;
+  // Start with currently selected or current suggestion
+  const curSel=a[aKey][attIdx]?String(a[aKey][attIdx]):'';
+  const startVal=a[optKey]?String(a[optKey]):(currentV?String(currentV):curSel);
+  npV=startVal||'';
+  npCb=(v)=>{
+    // Store as custom option
+    a[optKey]=v;
+    // Auto-select this option
+    const resKey=aKey.replace('A','R');
+    a[aKey][attIdx]=String(v);
+    a[resKey][attIdx]=null;
+    const tacMap={'sqA':'tacSq','bpA':'tacBp','dlA':'tacDl'};
+    if(tacMap[aKey]) a[tacMap[aKey]]=v;
+    // Sync att values to flight lifter
+    const fl=S.lifters.find(l=>l.myAthIdx===S.curAth);
+    if(fl){
+      if(attIdx===0) fl[aKey]=String(v);
+      else fl[aKey+(attIdx+1)]=String(v);
+    }
+    renderAtt();renderScenarios();renderFlight();saveToLocal();
+  };
+  document.getElementById('np-lbl').textContent=optLabel+' — Saisir la charge';
+  document.getElementById('np-disp').textContent=npV||'—';
+  openM('m-np');
+}
+
+function renderAtt(){
+  const el=document.getElementById('sp-att');
+  const a=S.athletes[S.curAth];if(!a){el.innerHTML='';return;}
+  const bSq=confirmed(a.sqA,a.sqR),bBp=confirmed(a.bpA,a.bpR),bDl=confirmed(a.dlA,a.dlR);
+  const tot=bSq&&bBp&&bDl?bSq+bBp+bDl:0;
+  // Running total: use confirmed lifts + att1 for pending lifts (shows immediately)
+  const runSq=bSq||f(a.sqA[0])||0;
+  const runBp=bBp||f(a.bpA[0])||0;
+  const runDl=bDl||f(a.dlA[0])||0;
+  const runTot=(runSq+runBp+runDl)||0;
+  // Live total: sum of what's confirmed so far (partial)
+  const liveSq=bSq||0, liveBp=bBp||0, liveDl=bDl||0;
+  const liveTotPartial=liveSq+liveBp+liveDl;
+  const glPts=runTot&&a.bw?gl(runTot,a.bw,a.sex):0;
+  const glConfirmed=tot&&a.bw?gl(tot,a.bw,a.sex):0;
+  const glLive=liveTotPartial&&a.bw?gl(liveTotPartial,a.bw,a.sex):0;
+  const prTot=a.prSq&&a.prBp&&a.prDl?a.prSq+a.prBp+a.prDl:0;
+  const gymTot=a.gymSq&&a.gymBp&&a.gymDl?a.gymSq+a.gymBp+a.gymDl:0;
+
+  let h=`<div class="p">
+  <div class="btwn mb8">
+    <div>
+      <div style="font-size:15px;font-weight:800;">${a.name}</div>
+      <div style="font-size:11px;color:var(--mu);margin-top:2px;">${a.div} · ${a.cat} · ${a.sex} · Flight ${a.flight}${a.bw?' · <b style=color:var(--go)>'+a.bw+'kg</b>':''}</div>
+    </div>
+    <button class="btn btngh bsm" onclick="editAth(${S.curAth})">✏️</button>
+  </div>
+  <div class="slbl">PRs compétition</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:6px;">
+    ${['Squat','Bench','Deadlift','Total'].map((lbl,i)=>{
+      const v=[a.prSq,a.prBp,a.prDl,prTot][i];
+      return`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:6px 5px;text-align:center;">
+        <div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">${lbl}</div>
+        <div style="font-size:13px;font-weight:700;font-family:monospace;color:var(--go);">${v||'—'}</div>
+      </div>`;
+    }).join('')}
+  </div>
+  <div class="slbl">PRs gymnase</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px;">
+    ${['Squat','Bench','Deadlift','Total'].map((lbl,i)=>{
+      const v=[a.gymSq,a.gymBp,a.gymDl,gymTot][i];
+      return`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:6px 5px;text-align:center;">
+        <div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">${lbl}</div>
+        <div style="font-size:13px;font-weight:700;font-family:monospace;color:var(--mu);">${v||'—'}</div>
+      </div>`;
+    }).join('')}
+  </div>
+  </div>
+  <div class="ss4 p" style="padding-top:0;padding-bottom:6px;">
+    <div class="sc">
+      <div class="sl">🦵 SQ${bSq?' ✓':''}</div>
+      <div class="sv sm${!bSq?' mu':''}">${bSq||fmt(a.sqA[0])||'—'}</div>
+    </div>
+    <div class="sc">
+      <div class="sl">💪 BP${bBp?' ✓':''}</div>
+      <div class="sv sm${!bBp?' mu':''}">${bBp||fmt(a.bpA[0])||'—'}</div>
+    </div>
+    <div class="sc">
+      <div class="sl">🏋 DL${bDl?' ✓':''}</div>
+      <div class="sv sm${!bDl?' mu':''}">${bDl||fmt(a.dlA[0])||'—'}</div>
+    </div>
+    <div class="sc hi">
+      <div class="sl">TOTAL${tot?' ✓':runTot?' (proj.)':''}</div>
+      <div class="sv sm">${tot||runTot||'—'}</div>
+    </div>
+  </div>
+  <div class="ss2 p" style="padding-top:0;padding-bottom:8px;">
+    <div class="sc hi">
+      <div class="sl">IPF GL${tot?' ✓':glPts?' proj.':''}</div>
+      <div class="sv sm">${glPts?glPts.toFixed(2):'—'}</div>
+      ${glLive&&glLive!==glPts?'<div style="font-size:9px;color:var(--gr);margin-top:1px;">conf: '+glLive.toFixed(2)+'</div>':''}
+    </div>
+    <div class="sc"><div class="sl">Poids / BW</div><div class="sv sm mu">${a.bw?a.bw+'kg':'—'}</div></div>
+  </div>`;
+
+  const lifts=[
+    {lbl:'SQUAT',ic:'🦵',aK:'sqA',rK:'sqR',prK:'prSq',nK:'notesSq',tK:'tacSq'},
+    {lbl:'BENCH PRESS',ic:'💪',aK:'bpA',rK:'bpR',prK:'prBp',nK:'notesBp',tK:'tacBp'},
+    {lbl:'DEADLIFT',ic:'🏋',aK:'dlA',rK:'dlR',prK:'prDl',nK:'notesDl',tK:'tacDl'}
+  ];
+
+  for(const L of lifts){
+    const atts=a[L.aK],res=a[L.rK];
+    const a1=f(atts[0]);
+    const best=confirmed(atts,res);
+    const pr=a[L.prK];
+
+    // Sport-specific offsets per lift type
+    // Att2 base = last att1 result (success or fail)
+    // Att3 base = att2 result
+    // On SUCCESS: SQ +5/+7.5/+10 | BP +2.5/+5/+7.5 | DL +7.5/+10/+15
+    // On FAIL:    all lifts: same / +2.5 / +5
+    const att1Res=res[0]; // true=ok, false=fail, null=pending
+    const att2Res=res[1];
+    const lastSuccessAtt1=att1Res===true?a1:null;
+    const lastFailAtt1=att1Res===false?a1:null;
+    // Offsets for Att2 suggestions
+    let offs2=[0,2.5,5]; // default (fail or no result)
+    if(att1Res===true){
+      if(L.lbl==='SQUAT')offs2=[5,7.5,10];
+      else if(L.lbl==='BENCH PRESS')offs2=[2.5,5,7.5];
+      else offs2=[7.5,10,15]; // DEADLIFT
+    }
+    // Base for att2: always att1 value
+    const base2=a1;
+    // Overrides: if user already manually set att2, keep it
+    const userAtt2=atts[1]?f(atts[1]):null;
+    // Compute att2 options (custom overrides stored in a.opts2X)
+    const o2aKey='opt2a_'+L.aK, o2bKey='opt2b_'+L.aK, o2cKey='opt2c_'+L.aK;
+    const v2a=a[o2aKey]||( base2?r25(base2+offs2[0]):null );
+    const v2b=a[o2bKey]||( base2?r25(base2+offs2[1]):null );
+    const v2c=a[o2cKey]||( base2?r25(base2+offs2[2]):null );
+    // Offsets for Att3: base = selected att2 OR first suggestion
+    const base3=userAtt2||v2a||0;
+    const att2ResVal=att2Res;
+    let offs3=[0,2.5,5]; // fail default
+    if(att2ResVal===true){
+      if(L.lbl==='SQUAT')offs3=[5,7.5,10];
+      else if(L.lbl==='BENCH PRESS')offs3=[2.5,5,7.5];
+      else offs3=[7.5,10,15];
+    }
+    const o3aKey='opt3a_'+L.aK, o3bKey='opt3b_'+L.aK, o3cKey='opt3c_'+L.aK;
+    const v3a=a[o3aKey]||( base3?r25(base3+offs3[0]):null );
+    const v3b=a[o3bKey]||( base3?r25(base3+offs3[1]):null );
+    const v3c=a[o3cKey]||( base3?r25(base3+offs3[2]):null );
+    const oSq=L.lbl!=='SQUAT'?bestOrA1(a.sqA,a.sqR):0;
+    const oBp=L.lbl!=='BENCH PRESS'?bestOrA1(a.bpA,a.bpR):0;
+    const oDl=L.lbl!=='DEADLIFT'?bestOrA1(a.dlA,a.dlR):0;
+    const oSum=oSq+oBp+oDl;
+    const totFor=v=>v&&oSum?oSum+v:null;
+
+    function prG(v){
+      if(!v||!pr)return'<span class="di">—</span>';
+      const d=v-pr;
+      if(d>=0)return`<span class="gr bold">PR+${d}kg</span>`;
+      if(Math.abs(d)<=10)return`<span class="go">▲${Math.abs(d)}kg</span>`;
+      return`<span class="di">▲${Math.abs(d)}kg</span>`;
+    }
+
+    // No auto-suggestion — user selects from table below
+
+    h+=`<div class="lh"><span class="li">${L.ic}</span><span class="lt">${L.lbl}</span>${best?`<span class="lb">Best: <b>${best}kg</b></span>`:''}</div>
+    <div class="aw">
+      <div style="font-size:9px;color:var(--di);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">▶ Warm-up → 1re Tentative</div>
+      <div class="wu-row">
+        ${WU.map(w=>{const wk=a1?r25(a1*w.p):null;return`<div class="wu-cell"><div class="wu-pct">${Math.round(w.p*100)}% ${w.r}</div><div class="wu-kg" style="color:${wk?'var(--go)':'var(--di)'};">${wk||'—'}</div></div>`;}).join('')}
+      </div>
+      <div style="font-size:9px;color:var(--di);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">
+        ATTEMPTS
+        ${res[0]!==null&&res[1]===null?'<span style="font-size:9px;color:var(--go);margin-left:8px;">→ Sélectionner Att.2 ci-dessous</span>':''}
+        ${res[1]!==null&&res[2]===null&&atts[1]?'<span style="font-size:9px;color:var(--go);margin-left:8px;">→ Sélectionner Att.3 ci-dessous</span>':''}
+        ${res[2]!==null?'<span style="font-size:9px;color:var(--gr);margin-left:8px;">✅ Mouvement terminé</span>':''}
+      </div>
+      <div class="a1r">
+        <div class="a1n">1</div>
+        <div class="a1k${!a1?' em':''}" onclick="openNP('${L.aK}',0,'${L.lbl} — Att. 1')">
+          <div class="kg">${a1||'—'}</div>${a1?`<div class="lb2">${lbs(a1)} lbs</div>`:''}
+        </div>
+        <div class="rb">
+          <button class="bok${res[0]===true?' sel':''}" onclick="setRes('${L.rK}',0,true)">✓</button>
+          <button class="bno${res[0]===false?' sel':''}" onclick="setRes('${L.rK}',0,false)">✗</button>
+        </div>
+      </div>
+      <div class="ot"><table class="otbl">
+        <thead><tr>
+          <th>Att.</th><th>kg</th><th>lbs</th><th>Total proj.</th><th>vs PR</th><th>Sélect.</th><th>&#10003; / &#10007;</th>
+        </tr></thead>
+        <tbody id="opt-tbody-${L.aK}">
+        ${buildOptRows(a,L.aK,L.rK,v2a,v2b,v2c,v3a,v3b,v3c,atts,res,totFor,prG)}
+        </tbody>
+      </table></div>
+      <!-- Tac target for this lift -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:6px 8px;background:var(--s2);border-radius:6px;border:1px solid var(--bd);">
+        <span style="font-size:10px;color:var(--di);">Charge tactique:</span>
+        <input type="number" step="2.5" value="${a[L.tK]||a1||''}" placeholder="—"
+          style="background:transparent;border:none;color:var(--go);font-size:13px;font-weight:700;width:60px;font-family:monospace;"
+          oninput="a=S.athletes[S.curAth];a['${L.tK}']=parseFloat(this.value)||0;renderScenarios()">
+        <span style="font-size:10px;color:var(--di);">kg — utilisée dans Scénarios ⚡</span>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:3px;">Notes</div>
+        <input type="text" value="${a[L.nK]||''}" placeholder="Notes..."
+          style="width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--mu);font-size:12px;padding:6px 10px;"
+          oninput="setNote('${L.nK}',this.value)">
+      </div>
+    </div>`;
+  }
+
+  // Records inline
+  h+=renderRecBanner(a);
+  el.innerHTML=h;
+}
+
+function renderRecBanner(a){
+  const bSq=confirmed(a.sqA,a.sqR)||f(a.sqA[0]);
+  const bBp=confirmed(a.bpA,a.bpR)||f(a.bpA[0]);
+  const bDl=confirmed(a.dlA,a.dlR)||f(a.dlA[0]);
+  const tot=bSq&&bBp&&bDl?bSq+bBp+bDl:0;
+  const feds=[
+    {k:'recFqd',l:'FQD',c:'fqd',p:'PR',src:'fqd-quebec.com'},
+    {k:'recCpu',l:'CPU',c:'cpu',p:'NR',src:'powerlifting.ca'},
+    {k:'recIpf',l:'IPF',c:'ipf',p:'WR',src:'powerlifting.sport'}
+  ];
+  const mvs=[{m:'sq',lbl:'Squat',cur:bSq},{m:'bp',lbl:'Bench',cur:bBp},{m:'dl',lbl:'Deadlift',cur:bDl},{m:'total',lbl:'Total',cur:tot}];
+  function g(cur,rec,p){
+    if(!rec||!cur)return'<span class="di">—</span>';
+    const d=cur-rec;
+    if(d>=0)return`<span class="gok">${p}! +${d.toFixed(1)}kg</span>`;
+    if(Math.abs(d)<=10)return`<span class="gne">▲${Math.abs(d).toFixed(1)}kg</span>`;
+    return`<span class="gfa">▲${Math.abs(d).toFixed(1)}kg</span>`;
+  }
+  let h=`<div style="border-top:2px solid var(--bd);padding:10px 12px;">
+    <div class="slbl" style="margin-top:4px;">RECORDS DE RÉFÉRENCE</div>
+    <div style="font-size:10px;color:var(--di);margin-bottom:8px;">✏️ Saisir manuellement — ${a.div} · ${a.cat} · ${a.sex}</div>`;
+  for(const fed of feds){
+    h+=`<div class="fl ${fed.c}">${fed.l} <span style="font-size:9px;font-weight:400;color:var(--di);">${fed.src}</span></div>
+    <div style="overflow-x:auto;"><table class="rtbl">
+      <thead><tr><th>Mouvement</th><th>Record (kg)</th><th>Écart live</th></tr></thead>
+      <tbody>`;
+    for(const mv of mvs){
+      const rv=a[fed.k][mv.m];
+      h+=`<tr><td style="color:var(--mu);font-size:12px;">${mv.lbl}</td>
+        <td><input class="ri" type="number" step="0.5" value="${rv||''}" placeholder="—"
+          onchange="setRec(${S.curAth},'${fed.k}','${mv.m}',this.value)"
+          onblur="setRec(${S.curAth},'${fed.k}','${mv.m}',this.value)"></td>
+        <td id="gap-${S.curAth}-${fed.k}-${mv.m}">${g(mv.cur,rv,fed.p)}</td></tr>`;
+    }
+    h+=`</tbody></table></div>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
+function renderWu(){
+  const el=document.getElementById('sp-wu');
+  const a=S.athletes[S.curAth];if(!a){el.innerHTML='';return;}
+  const lifts=[{lbl:'🦵 SQUAT',aK:'sqA'},{lbl:'💪 BENCH PRESS',aK:'bpA'},{lbl:'🏋 DEADLIFT',aK:'dlA'}];
+  let h='<div class="p">';
+  for(const L of lifts){
+    const a1=f(a[L.aK][0]);
+    h+=`<div class="cd" style="margin-bottom:10px;">
+      <div class="ch"><span class="ct">${L.lbl}</span>${a1?`<span style="font-size:11px;color:var(--mu);">Att.1: <b class="go">${a1}kg</b></span>`:'<span style="font-size:10px;color:var(--di);">→ Saisir Att.1</span>'}</div>
+      <div style="overflow-x:auto;"><table class="rtbl">
+        <thead><tr><th>#</th><th>%</th><th>kg</th><th>lbs</th><th>Reps</th></tr></thead>
+        <tbody>${WU.map(w=>{const wk=a1?r25(a1*w.p):null;return`<tr><td>${w.s}</td><td class="di">${Math.round(w.p*100)}%</td><td${wk?` style="font-family:monospace;font-weight:700;color:var(--go)"`:' class="di"'}>${wk||'—'}</td><td class="di" style="font-family:monospace;font-size:11px;">${wk?lbs(wk):'—'}</td><td class="di">${w.r}</td></tr>`;}).join('')}</tbody>
+      </table></div>
+    </div>`;
+  }
+  h+='</div>';
+  el.innerHTML=h;
+}
+
+function renderRec(){
+  const el=document.getElementById('sp-rec');
+  const a=S.athletes[S.curAth];if(!a){el.innerHTML='';return;}
+  const bSq=confirmed(a.sqA,a.sqR)||f(a.sqA[0]);
+  const bBp=confirmed(a.bpA,a.bpR)||f(a.bpA[0]);
+  const bDl=confirmed(a.dlA,a.dlR)||f(a.dlA[0]);
+  const tot=bSq&&bBp&&bDl?bSq+bBp+bDl:0;
+  const feds=[
+    {k:'recFqd',l:'FQD',c:'fqd',p:'PR',src:'fqd-quebec.com/records'},
+    {k:'recCpu',l:'CPU',c:'cpu',p:'NR',src:'powerlifting.ca/records'},
+    {k:'recIpf',l:'IPF',c:'ipf',p:'WR',src:'powerlifting.sport/records'}
+  ];
+  const mvs=[{m:'sq',lbl:'Squat kg',cur:bSq},{m:'bp',lbl:'Bench kg',cur:bBp},{m:'dl',lbl:'Deadlift kg',cur:bDl},{m:'total',lbl:'Total kg',cur:tot}];
+  function g(cur,rec,p){if(!rec||!cur)return'<span class="di">—</span>';const d=cur-rec;if(d>=0)return`<span class="gok">${p}! +${d.toFixed(1)}kg</span>`;if(Math.abs(d)<=10)return`<span class="gne">▲${Math.abs(d).toFixed(1)}kg</span>`;return`<span class="gfa">▲${Math.abs(d).toFixed(1)}kg</span>`;}
+  let h=`<div style="padding:10px 12px;"><div style="font-size:11px;color:var(--mu);margin-bottom:6px;">${a.div} · ${a.cat} · ${a.sex}</div>`;
+  for(const fed of feds){
+    h+=`<div class="fl ${fed.c}">${fed.l} <span style="font-size:9px;font-weight:400;color:var(--di);">${fed.src}</span></div>
+    <div style="overflow-x:auto;"><table class="rtbl">
+      <thead><tr><th>Mouvement</th><th>Record (kg)</th><th>Écart live</th></tr></thead>
+      <tbody>`;
+    for(const mv of mvs){const rv=a[fed.k][mv.m];h+=`<tr><td>${mv.lbl}</td><td><input class="ri" type="number" step="0.5" value="${rv||''}" placeholder="—" oninput="setRec(${S.curAth},'${fed.k}','${mv.m}',this.value)"></td><td>${g(mv.cur,rv,fed.p)}</td></tr>`;}
+    h+=`</tbody></table></div>`;
+  }
+  h+=`</div>`;
+  el.innerHTML=h;
+}
+
+// ════════════════════════════════════════════════════════════
+// FLIGHT TABLE
+// ════════════════════════════════════════════════════════════
+function openAddLifter(){
+  const sel=document.getElementById('l-mine');
+  sel.innerHTML=`<option value="">— Adversaire —</option>`+S.athletes.map((a,i)=>`<option value="${i}">${a.name} (Flight ${a.flight})</option>`).join('');
+  ['l-name','l-bw','l-sqa1','l-bpa1','l-dla1','l-lot','l-notes'].forEach(id=>document.getElementById(id).value='');
+  // Pre-fill flight from currently selected athlete
+  const curFlight = S.athletes[S.curAth]?.flight || 'A';
+  const flightSel = document.getElementById('l-flight');
+  if(flightSel) flightSel.value = curFlight;
+  openM('m-lifter');
+}
+
+function saveLifter(){
+  const name=document.getElementById('l-name').value.trim();
+  if(!name){alert('Saisis un nom');return;}
+  const mv=document.getElementById('l-mine').value;
+  const myAthIdx=null; // Athletes are auto-added; this modal is for rivals only
+  const bwRaw=parseFloat(document.getElementById('l-bw').value)||0;
+  const sqA1=document.getElementById('l-sqa1').value;
+  const bpA1=document.getElementById('l-bpa1').value;
+  const dlA1=document.getElementById('l-dla1').value;
+  const lot=document.getElementById('l-lot').value;
+
+  // If linked to an athlete, sync data bidirectionally
+  if(myAthIdx!==null && S.athletes[myAthIdx]){
+    const a=S.athletes[myAthIdx];
+    // Copy BW from flight to athlete if athlete has none
+    if(bwRaw&&!a.bw) a.bw=bwRaw;
+    // Copy BW from athlete to flight if flight has none
+    const finalBw=bwRaw||a.bw||0;
+    // Copy att1 from flight to athlete if athlete has none
+    if(sqA1&&!a.sqA[0]) a.sqA[0]=sqA1;
+    if(bpA1&&!a.bpA[0]) a.bpA[0]=bpA1;
+    if(dlA1&&!a.dlA[0]) a.dlA[0]=dlA1;
+    // Copy lot from flight to athlete
+    if(lot&&!a.lot) a.lot=lot;
+    // Update tac targets if not set
+    if(sqA1&&!a.tacSq) a.tacSq=parseFloat(sqA1)||0;
+    if(bpA1&&!a.tacBp) a.tacBp=parseFloat(bpA1)||0;
+    if(dlA1&&!a.tacDl) a.tacDl=parseFloat(dlA1)||0;
+  }
+
+  const finalBw=parseFloat(document.getElementById('l-bw').value)||
+    (myAthIdx!==null?S.athletes[myAthIdx]?.bw||0:0);
+
+  // Determine which flight this lifter belongs to
+  const lifterFlight = myAthIdx!==null && S.athletes[myAthIdx]
+    ? S.athletes[myAthIdx].flight
+    : (document.getElementById('l-flight')?.value || 'A');
+
+  S.lifters.push({
+    name, bw:finalBw,
+    sqA:sqA1, bpA:bpA1, dlA:dlA1,
+    lot,
+    flight: lifterFlight,
+    notes: document.getElementById('l-notes').value,
+    myAthIdx,
+    bestSq:0, bestBp:0, bestDl:0,
+    sqR:[null,null,null], bpR:[null,null,null], dlR:[null,null,null]
+  });
+  closeM('m-lifter');
+  renderFlight();renderGP();renderScenarios();saveToLocal();
+}
+
+function openLifterAtt(idx){
+  const l=S.lifters[idx];
+  document.getElementById('m-la-ti').textContent=l.name+' — Résultats';
+  const lifts=[
+    {lbl:'Squat',aK:'sqA',rK:'sqR',bK:'bestSq'},
+    {lbl:'Bench',aK:'bpA',rK:'bpR',bK:'bestBp'},
+    {lbl:'Deadlift',aK:'dlA',rK:'dlR',bK:'bestDl'}
+  ];
+  let h='';
+  for(const L of lifts){
+    const atts=[l[L.aK],l[L.aK+'2']||'',l[L.aK+'3']||''];
+    h+=`<div style="margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;margin-bottom:5px;">${L.lbl}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
+        ${[0,1,2].map(i=>{
+          const aKey=i===0?L.aK:L.aK+(i+1);
+          const rKey=i===0?L.rK:L.rK+(i+1);
+          const kg=i===0?l[L.aK]:(l[L.aK+(i+1)]||'');
+          const res=l[L.rK]?l[L.rK][i]:null;
+          return`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:7px;text-align:center;">
+            <div style="font-size:9px;color:var(--di);margin-bottom:3px;">Att.${i+1}</div>
+            <input type="number" step="0.5" value="${kg||''}" placeholder="—"
+              style="background:transparent;border:none;color:var(--go);font-size:14px;font-weight:800;text-align:center;width:100%;font-family:monospace;"
+              oninput="setLifterAtt(${idx},'${L.aK}','${L.bK}',${i},this.value)">
+            <div style="display:flex;gap:3px;justify-content:center;margin-top:4px;">
+              <div class="bok${res===true?' sel':''}" style="padding:3px 6px;font-size:11px;flex:1;" onclick="setLifterRes(${idx},'${L.rK}','${L.bK}',${i},true)">✓</div>
+              <div class="bno${res===false?' sel':''}" style="padding:3px 6px;font-size:11px;flex:1;" onclick="setLifterRes(${idx},'${L.rK}','${L.bK}',${i},false)">✗</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+  document.getElementById('m-la-body').innerHTML=h;
+  openM('m-lifter-att');
+}
+
+function setLifterAtt(idx,aKey,bKey,attIdx,val){
+  const l=S.lifters[idx];
+  if(attIdx===0)l[aKey]=val;
+  else l[aKey+(attIdx+1)]=val;
+  // Update best
+  let best=0;
+  const baseVal=f(l[aKey]),a2=f(l[aKey+'2']),a3=f(l[aKey+'3']);
+  const res=l[aKey.replace('A','R')]||[null,null,null];
+  if(res[0]===true&&baseVal>best)best=baseVal;
+  if(res[1]===true&&a2>best)best=a2;
+  if(res[2]===true&&a3>best)best=a3;
+  if(!best)best=baseVal||a2||a3;
+  l[bKey]=best;
+  renderFlight();renderScenarios();
+}
+
+function setLifterRes(idx,rKey,bKey,attIdx,val){
+  const l=S.lifters[idx];
+  if(!l[rKey])l[rKey]=[null,null,null];
+  l[rKey][attIdx]=l[rKey][attIdx]===val?null:val;
+  // recompute best
+  const aKey=rKey.replace('R','A');
+  const atts=[f(l[aKey]),f(l[aKey+'2']||0),f(l[aKey+'3']||0)];
+  let best=0;
+  for(let i=0;i<3;i++)if(l[rKey][i]===true&&atts[i]>best)best=atts[i];
+  if(!best)best=atts[0];
+  l[bKey]=best;
+  openLifterAtt(idx);renderFlight();renderScenarios();
+}
+
+function renderFlight(){
+  renderAthBar('ab-fl');
+  const tbody=document.getElementById('fl-body');
+  
+  // Get current athlete's flight
+  const curAth = S.athletes[S.curAth];
+  const curFlight = curAth?.flight || 'A';
+  
+  // Separate: my athlete's entry vs rivals
+  const myLifter = S.lifters.find(l => l.myAthIdx===S.curAth && (l.flight||'A')===curFlight);
+  const flightLifters = S.lifters.filter(l => (l.flight||'A')===curFlight && l.myAthIdx!==S.curAth);
+
+  // Update title (after flightLifters is defined)
+  const titleEl = document.getElementById('fl-title');
+  if(titleEl) titleEl.textContent = '📋 Flight '+curFlight+(curAth?' — '+curAth.name:'');
+  const countEl = document.getElementById('fl-count');
+  if(countEl) countEl.textContent = flightLifters.length+' adversaire'+(flightLifters.length!==1?'s':'');
+  
+  if(!myLifter && !flightLifters.length){
+    tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;color:var(--di);padding:24px;">Flight ${curFlight} vide — les athlètes sont auto-ajoutés, ajoute les adversaires avec "+ Leveur"</td></tr>`;
+    return;
+  }
+  // All lifters for display: my athlete first, then rivals sorted
+  const allFlightLifters = [...(myLifter?[myLifter]:[]), ...flightLifters];
+  const sorted=[...allFlightLifters].map((l)=>({...l,_i:S.lifters.indexOf(l)})).sort((a,b)=>{
+    // My athlete always first
+    if(a.myAthIdx===S.curAth) return -1;
+    if(b.myAthIdx===S.curAth) return 1;
+    if(a.lot&&b.lot&&a.lot!==b.lot)return parseInt(a.lot)-parseInt(b.lot);
+    return (f(b.bestSq)+f(b.bestBp)+f(b.bestDl))-(f(a.bestSq)+f(a.bestBp)+f(a.bestDl));
+  });
+  // Section headers
+  let prevIsAth=null;
+  tbody.innerHTML=sorted.map(l=>{
+    const isMyAth = l.myAthIdx===S.curAth;
+    // Section header divider
+    if(prevIsAth!==null && isMyAth!==prevIsAth){
+      // Divider between athlete and rivals
+    }
+    if(prevIsAth===null && !isMyAth && myLifter){
+      // No athlete entry — skip divider
+    }
+    prevIsAth=isMyAth;
+    const bSq=f(l.bestSq)||f(l.sqA),bBp=f(l.bestBp)||f(l.bpA),bDl=f(l.bestDl)||f(l.dlA);
+    const tot=bSq+bBp+bDl||'—';
+    const sex=l.myAthIdx!==null?S.athletes[l.myAthIdx]?.sex||'H':'H';
+    const glPts=(l.bw&&tot!=='—')?gl(tot,l.bw,sex):null;
+    const isMine=l.myAthIdx!==null;
+    const athName=isMine&&S.athletes[l.myAthIdx]?S.athletes[l.myAthIdx].name.split(' ')[0]:'';
+    const rSq=l.sqR||[null,null,null],rBp=l.bpR||[null,null,null],rDl=l.dlR||[null,null,null];
+    function dots(resArr,attsArr,l){
+      const res=resArr||[null,null,null];
+      const att1=f(l[attsArr])||0;
+      const att2=f(l[attsArr+'2'])||0;
+      const att3=f(l[attsArr+'3'])||0;
+      const atts=[att1,att2,att3];
+      return '<div class="att-dots">'+[0,1,2].map(i=>{
+        const r=res[i];
+        const hasVal=atts[i]>0;
+        const cls=r===true?'ok':r===false?'fail':hasVal?'next':'empty';
+        return '<div class="att-dot '+cls+'" title="'+(atts[i]?atts[i]+'kg':'—')+'"></div>';
+      }).join('')+'</div>';
+    }
+    return`<tr style="${isMyAth?'background:rgba(184,134,11,.06);border-left:3px solid var(--go);':isMine?'background:rgba(184,134,11,.03);':''}">
+      <td style="color:var(--di);">${l.lot||'—'}</td>
+      <td>${l.name}${isMyAth?'<span class="mt">MON ATH.</span>':''}${l.notes?`<span class="ft">👁</span>`:''}</td>
+      <td class="mono">${l.bw||'—'}</td>
+      <td class="mono${bSq?' go':' di'}">${bSq||'—'}</td>
+      <td class="mono${bBp?' go':' di'}">${bBp||'—'}</td>
+      <td class="mono${bDl?' go':' di'}">${bDl||'—'}</td>
+      <td class="mono bold">${tot}</td>
+      <td class="mono" style="color:var(--te);font-size:11px;">${glPts?glPts.toFixed(2):'—'}</td>
+      <td>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div style="display:flex;gap:4px;">
+            <span style="font-size:9px;color:var(--di);">SQ</span>${dots(l.sqR,'sqA',l)}
+            <span style="font-size:9px;color:var(--di);">BP</span>${dots(l.bpR,'bpA',l)}
+            <span style="font-size:9px;color:var(--di);">DL</span>${dots(l.dlR,'dlA',l)}
+          </div>
+        </div>
+      </td>
+      <td>
+        <button class="btn btngh bsm" onclick="openLifterAtt(${l._i})" style="margin-right:4px;">✏️</button>
+        ${isMyAth?'<span style="font-size:10px;color:var(--di);">auto</span>':`<button class="btn btnd bsm" onclick="delLifter(${l._i})">✕</button>`}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function delLifter(i){S.lifters.splice(i,1);renderFlight();renderScenarios();}
+
+// ════════════════════════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════════════════════════
+document.querySelectorAll('.nb').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.pnl').forEach(x=>x.classList.remove('on'));
+  this.classList.add('on');
+  document.getElementById('pnl-'+this.dataset.nav).classList.add('on');
+  if(this.dataset.nav==='gp')renderGP();
+  if(this.dataset.nav==='sc')renderScenarios();
+  if(this.dataset.nav==='fl'){renderAthBar('ab-fl');renderFlight();}
+  if(this.dataset.nav==='hi'){renderAthBar('ab-hi');renderHistorique();}
+}));
+
+document.querySelectorAll('.sbn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.sbn').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.sp').forEach(x=>x.classList.remove('on'));
+  this.classList.add('on');S.curSub=this.dataset.sub;
+  document.getElementById('sp-'+this.dataset.sub).classList.add('on');
+  renderGP();
+  if(this.dataset.sub==='std') renderStandards();
+}));
+
+// ════════════════════════════════════════════════════════════
+// ATH BAR
+// ════════════════════════════════════════════════════════════
+function renderAthBar(id){
+  const el=document.getElementById(id);
+  el.innerHTML=S.athletes.map((a,i)=>
+    `<button class="ac${i===S.curAth?' on':''}" onclick="selAth(${i})">${a.name.split(' ')[0]}</button>`
+  ).join('');
+}
+function selAth(i){
+  S.curAth=i;
+  renderGP();renderScenarios();
+  // Re-render flight if visible
+  const flPanel=document.getElementById('pnl-fl');
+  if(flPanel&&flPanel.classList.contains('on'))renderFlight();
+  // Re-render historique if visible
+  const hiPanel=document.getElementById('pnl-hi');
+  if(hiPanel&&hiPanel.classList.contains('on'))renderHistorique();
+  saveToLocal();
+}
+
+// ════════════════════════════════════════════════════════════
+// SETUP
+// ════════════════════════════════════════════════════════════
+function refreshCats(){
+  const sex=document.getElementById('ma-sex').value;
+  const cats=sex==='H'?CATS_H:CATS_F;
+  const sel=document.getElementById('ma-cat');const cur=sel.value;
+  sel.innerHTML=cats.map(c=>`<option${c===cur?' selected':''}>${c}</option>`).join('');
+}
+function syncMeet(){S.meet.name=document.getElementById('s-meet').value;S.meet.date=document.getElementById('s-date').value;document.getElementById('tb-meet').textContent=S.meet.name||'Nouvelle compétition';}
+function openAddAth(){S.editIdx=-1;document.getElementById('m-ath-ti').textContent='Nouvel athlète';['ma-name','ma-bw','ma-psq','ma-pbp','ma-pdl','ma-gsq','ma-gbp','ma-gdl'].forEach(id=>document.getElementById(id).value='');document.getElementById('ma-sex').value='H';document.getElementById('ma-div').value='Open (24+)';document.getElementById('ma-fl').value='A';refreshCats();openM('m-ath');}
+function editAth(i){S.editIdx=i;const a=S.athletes[i];document.getElementById('m-ath-ti').textContent='Modifier athlète';document.getElementById('ma-name').value=a.name;document.getElementById('ma-sex').value=a.sex;document.getElementById('ma-div').value=a.div;document.getElementById('ma-bw').value=a.bw||'';document.getElementById('ma-fl').value=a.flight;document.getElementById('ma-psq').value=a.prSq||'';document.getElementById('ma-pbp').value=a.prBp||'';document.getElementById('ma-pdl').value=a.prDl||'';document.getElementById('ma-gsq').value=a.gymSq||'';document.getElementById('ma-gbp').value=a.gymBp||'';document.getElementById('ma-gdl').value=a.gymDl||'';refreshCats();document.getElementById('ma-cat').value=a.cat;openM('m-ath');}
+function autoTotal(type){
+  const map={
+    comp:{sq:'ma-psq',bp:'ma-pbp',dl:'ma-pdl',out:'tot-comp'},
+    gym: {sq:'ma-gsq',bp:'ma-gbp',dl:'ma-gdl',out:'tot-gym'},
+    obj: {sq:'ma-osq',bp:'ma-obp',dl:'ma-odl',out:'tot-obj'}
+  };
+  const m=map[type];if(!m)return;
+  const sq=parseFloat(document.getElementById(m.sq)?.value)||0;
+  const bp=parseFloat(document.getElementById(m.bp)?.value)||0;
+  const dl=parseFloat(document.getElementById(m.dl)?.value)||0;
+  const el=document.getElementById(m.out);
+  if(el) el.textContent=(sq&&bp&&dl)?( sq+bp+dl)+' kg':'—';
+}
+
+// Auto-create or update the flight lifter entry for an athlete
+function autoSyncAthleteToFlight(athIdx){
+  if(athIdx<0||athIdx>=S.athletes.length) return;
+  const a=S.athletes[athIdx];
+  // Find existing linked lifter
+  const existingIdx=S.lifters.findIndex(l=>l.myAthIdx===athIdx);
+  const lifterData={
+    name: a.name,
+    bw: a.bw||0,
+    flight: a.flight||'A',
+    lot: a.lot||'',
+    myAthIdx: athIdx,
+    sqA: a.sqA[0]||'', bpA: a.bpA[0]||'', dlA: a.dlA[0]||'',
+    notes: '',
+    bestSq: confirmed(a.sqA,a.sqR)||0,
+    bestBp: confirmed(a.bpA,a.bpR)||0,
+    bestDl: confirmed(a.dlA,a.dlR)||0,
+    sqR: [...a.sqR], bpR: [...a.bpR], dlR: [...a.dlR]
+  };
+  // Copy extra attempt values
+  ['sqA','bpA','dlA'].forEach(k=>{
+    lifterData[k]=a[k][0]||'';
+    lifterData[k+'2']=a[k][1]||'';
+    lifterData[k+'3']=a[k][2]||'';
+  });
+  if(existingIdx>=0){
+    // Update existing — preserve results already entered
+    const ex=S.lifters[existingIdx];
+    S.lifters[existingIdx]={...ex,...lifterData,
+      // Keep results from whichever source is more complete
+      sqR:[...a.sqR], bpR:[...a.bpR], dlR:[...a.dlR]
+    };
+  } else {
+    S.lifters.push(lifterData);
+  }
+}
+
+function saveAth(){
+  const name=document.getElementById('ma-name').value.trim();if(!name){alert('Saisis un nom');return;}
+  const base=S.editIdx>=0?S.athletes[S.editIdx]:{};
+  const a=makeAth({...base,name,sex:document.getElementById('ma-sex').value,div:document.getElementById('ma-div').value,cat:document.getElementById('ma-cat').value,bw:parseFloat(document.getElementById('ma-bw').value)||0,flight:document.getElementById('ma-fl').value,prSq:parseFloat(document.getElementById('ma-psq').value)||0,prBp:parseFloat(document.getElementById('ma-pbp').value)||0,prDl:parseFloat(document.getElementById('ma-pdl').value)||0,gymSq:parseFloat(document.getElementById('ma-gsq').value)||0,gymBp:parseFloat(document.getElementById('ma-gbp').value)||0,gymDl:parseFloat(document.getElementById('ma-gdl').value)||0});
+  if(S.editIdx>=0)S.athletes[S.editIdx]=a;
+  else{S.athletes.push(a);S.curAth=S.athletes.length-1;}
+  // Auto-add or update this athlete as a flight lifter
+  autoSyncAthleteToFlight(S.editIdx>=0?S.editIdx:S.athletes.length-1);
+  closeM('m-ath');renderSetup();renderAthBar('ab-gp');renderAthBar('ab-sc');renderAthBar('ab-hi');renderGP();renderScenarios();renderFlight();saveToLocal();
+}
+function delAth(i){
+  if(!confirm('Supprimer cet athl\u00e8te?'))return;
+  // Remove linked flight lifter
+  S.lifters=S.lifters.filter(l=>l.myAthIdx!==i);
+  // Re-index myAthIdx for lifters with higher indices
+  S.lifters.forEach(l=>{ if(l.myAthIdx!==null&&l.myAthIdx>i) l.myAthIdx--; });
+  S.athletes.splice(i,1);
+  if(S.curAth>=S.athletes.length)S.curAth=Math.max(0,S.athletes.length-1);
+  renderSetup();renderAthBar('ab-gp');renderAthBar('ab-sc');renderGP();renderScenarios();renderFlight();saveToLocal();
+}
+function renderSetup(){
+  const el=document.getElementById('ath-list');
+  if(!S.athletes.length){el.innerHTML=`<div class="empty"><div class="ei">🏋</div><p>Appuie sur "+ Ajouter"</p></div>`;return;}
+  el.innerHTML=S.athletes.map((a,i)=>`<div class="ar"><div class="av">${a.name.charAt(0).toUpperCase()}</div><div class="ai"><div class="an">${a.name}</div><div class="am">${a.div} · ${a.cat} · ${a.sex} · Flight ${a.flight}${a.bw?' · '+a.bw+'kg':''}</div></div><button class="btn btngh bsm" onclick="editAth(${i})">✏️</button><button class="btn btnd bsm" onclick="delAth(${i})">✕</button></div>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+// ACTIONS
+// ════════════════════════════════════════════════════════════
+// Edit an option manually (custom kg)
+function editOpt(aKey, optKey, optLabel, grp, val){
+  const a=S.athletes[S.curAth];
+  const v=parseFloat(val);
+  if(isNaN(v)||v<=0){
+    a[optKey]=null;
+  } else {
+    a[optKey]=r25(v);
+    // Auto-select this option immediately when a custom value is typed
+    const attIdx=grp===2?1:2;
+    const resKey=aKey.replace('A','R');
+    a[aKey][attIdx]=String(r25(v));
+    a[resKey][attIdx]=null; // clear old result
+    // Update tactical target
+    const tacMap={'sqA':'tacSq','bpA':'tacBp','dlA':'tacDl'};
+    if(tacMap[aKey]) a[tacMap[aKey]]=r25(v);
+  }
+  renderAtt();renderScenarios();
+}
+
+// Select a charge for att2 or att3 from the option table
+function selectAtt(attKey, optLabel, grp, kg){
+  const a=S.athletes[S.curAth];
+  const attIdx=grp===2?1:2;
+  const resKey=attKey.replace('A','R');
+  const tacMap={'sqA':'tacSq','bpA':'tacBp','dlA':'tacDl'};
+  // Toggle off if already selected
+  if(f(a[attKey][attIdx])===f(kg)){
+    a[attKey][attIdx]='';
+    a[resKey][attIdx]=null;
+  } else {
+    const rounded=r25(f(kg));
+    a[attKey][attIdx]=String(rounded);
+    a[resKey][attIdx]=null;
+    // Always update tactical target so scenarios reflect selected charge
+    if(tacMap[attKey]) a[tacMap[attKey]]=rounded;
+    // Sync to flight lifter
+    const fl=S.lifters.find(l=>l.myAthIdx===S.curAth);
+    if(fl){
+      if(attIdx===0) fl[attKey]=String(rounded);
+      else fl[attKey+(attIdx+1)]=String(rounded);
+      // Recompute flight best
+      const bKey='best'+attKey.charAt(0).toUpperCase()+(attKey==='sqA'?'Sq':attKey==='bpA'?'Bp':'Dl');
+      if(a[resKey][attIdx]===true) fl[bKey]=Math.max(f(fl[bKey])||0, rounded);
+    }
+  }
+  renderAtt();renderScenarios();saveToLocal();
+}
+
+function setRes(rK,idx,val){
+  const a=S.athletes[S.curAth];
+  // Toggle result
+  a[rK][idx]=a[rK][idx]===val?null:val;
+
+  // ── AUTO-SYNC to athlete's flight lifter (auto-created)
+  autoSyncAthleteToFlight(S.curAth);
+  const flightLifter=S.lifters.find(l=>l.myAthIdx===S.curAth);
+  if(flightLifter){
+    // Map resKey → flight lifter keys
+    const liftMap={
+      sqR:{attArr:'sqA',bestKey:'bestSq',resArr:'sqR'},
+      bpR:{attArr:'bpA',bestKey:'bestBp',resArr:'bpR'},
+      dlR:{attArr:'dlA',bestKey:'bestDl',resArr:'dlR'}
+    };
+    const lm=liftMap[rK];
+    if(lm){
+      // Sync the attempt value
+      const athAtts=a[lm.attArr];
+      // Update flight lifter attempt values
+      if(idx===0) flightLifter[lm.attArr]=athAtts[0]||'';
+      else {
+        flightLifter[lm.attArr+(idx+1)]=athAtts[idx]||'';
+      }
+      // Sync result
+      if(!flightLifter[lm.resArr]) flightLifter[lm.resArr]=[null,null,null];
+      flightLifter[lm.resArr][idx]=a[rK][idx];
+      // Recompute best
+      let best=0;
+      const atts=[f(flightLifter[lm.attArr]),f(flightLifter[lm.attArr+'2']||0),f(flightLifter[lm.attArr+'3']||0)];
+      for(let i=0;i<3;i++) if(flightLifter[lm.resArr][i]===true&&atts[i]>best) best=atts[i];
+      if(!best) best=atts[0];
+      flightLifter[lm.bestKey]=best;
+    }
+  }
+
+  renderAtt();renderRec();renderScenarios();renderFlight();saveToLocal();
+}
+function setNote(key,val){S.athletes[S.curAth][key]=val;}
+function setRec(ai,fk,mv,val){
+  S.athletes[ai][fk][mv]=parseFloat(val)||0;
+  // Update only the gap cell inline — no full re-render so cursor stays
+  updateRecGapCell(ai,fk,mv);
+  renderScenarios();
+  saveToLocal();
+}
+
+function updateRecGapCell(ai,fk,mv){
+  const a=S.athletes[ai];
+  const bSq=confirmed(a.sqA,a.sqR)||f(a.sqA[0]);
+  const bBp=confirmed(a.bpA,a.bpR)||f(a.bpA[0]);
+  const bDl=confirmed(a.dlA,a.dlR)||f(a.dlA[0]);
+  const bTot=bSq&&bBp&&bDl?bSq+bBp+bDl:0;
+  const curMap={sq:bSq,bp:bBp,dl:bDl,total:bTot};
+  const cur=curMap[mv]||0;
+  const rv=a[fk][mv]||0;
+  const fedPre={recFqd:'PR',recCpu:'NR',recIpf:'WR'}[fk]||'';
+  const cellId='gap-'+ai+'-'+fk+'-'+mv;
+  const el=document.getElementById(cellId);
+  if(!el)return;
+  if(!rv||!cur){el.innerHTML='<span style="color:var(--di)">—</span>';return;}
+  const d=cur-rv;
+  if(d>=0) el.innerHTML='<span style="color:var(--gr);font-weight:700;">'+fedPre+'! +'+d.toFixed(1)+'kg</span>';
+  else if(Math.abs(d)<=10) el.innerHTML='<span style="color:var(--go);">▲'+Math.abs(d).toFixed(1)+'kg</span>';
+  else el.innerHTML='<span style="color:var(--di);">▲'+Math.abs(d).toFixed(1)+'kg</span>';
+}
+
+// ════════════════════════════════════════════════════════════
+// NUMPAD
+// ════════════════════════════════════════════════════════════
+let npV='',npCb=null;
+function openNP(aK,i,lbl){const a=S.athletes[S.curAth];npV=a[aK][i]?String(a[aK][i]):'';npCb=(v)=>{
+    a[aK][i]=v;
+    // Auto-set tactical target when att1 is entered
+    if(i===0){
+      const tacMap={'sqA':'tacSq','bpA':'tacBp','dlA':'tacDl'};
+      if(tacMap[aK]&&!a[tacMap[aK]]) a[tacMap[aK]]=v;
+    }
+    // Sync full athlete state to flight lifter
+    autoSyncAthleteToFlight(S.curAth);
+    renderGP();renderScenarios();renderFlight();saveToLocal();
+  };document.getElementById('np-lbl').textContent=lbl;document.getElementById('np-disp').textContent=npV||'—';openM('m-np');}
+function nk(k){if(k==='del')npV=npV.slice(0,-1);else if(k==='.'&&npV.includes('.'))return;else{if(npV.length>=6)return;npV+=k;}document.getElementById('np-disp').textContent=npV||'—';}
+function confirmNp(){const v=parseFloat(npV);if(!isNaN(v)&&v>0&&npCb)npCb(r25(v));closeM('m-np');}
+
+// ════════════════════════════════════════════════════════════
+// SAVE / LOAD
+// ════════════════════════════════════════════════════════════
+function saveData(){document.getElementById('save-txt').value=JSON.stringify(S,null,2);openM('m-save');}
+function copyData(){const t=document.getElementById('save-txt');t.select();document.execCommand('copy');alert('Copié !');}
+function loadData(){document.getElementById('save-txt').value='';openM('m-save');}
+function importData(){
+  try{const d=JSON.parse(document.getElementById('save-txt').value);
+    S.meet=d.meet||S.meet;S.athletes=(d.athletes||[]).map(makeAth);
+    S.lifters=d.lifters||[];S.curAth=Math.min(d.curAth||0,S.athletes.length-1);
+    closeM('m-save');renderSetup();renderAthBar('ab-gp');renderAthBar('ab-sc');renderGP();renderScenarios();renderFlight();
+    document.getElementById('s-meet').value=S.meet.name||'';document.getElementById('s-date').value=S.meet.date||'';syncMeet();
+    alert('Données chargées!');
+  }catch(e){alert('Erreur: JSON invalide');}
+}
+
+// ════════════════════════════════════════════════════════════
+// MODAL HELPERS
+// ════════════════════════════════════════════════════════════
+function openM(id){document.getElementById(id).classList.remove('hid');}
+function closeM(id){document.getElementById(id).classList.add('hid');}
+document.querySelectorAll('.mbg').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.add('hid');}));
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+// HISTORIQUE — Competition history per athlete
+// ════════════════════════════════════════════════════════════
+
+// History is stored in S.history = array of meet objects
+// Each meet: { id, meet, date, location, athletes: [{athName, athIdx, div, cat, sex, bw,
+//   sq, bp, dl, total, gl, rank, notes, prComp:{sq,bp,dl}, objComp:{sq,bp,dl} }] }
+
+function openArchiveModal(){
+  if(!S.athletes.length){alert('Aucun athlète dans Setup');return;}
+  // Pre-fill meet name and date from current meet settings
+  const mn=document.getElementById('s-meet')?.value||S.meet.name||'';
+  const md=document.getElementById('s-date')?.value||S.meet.date||new Date().toISOString().split('T')[0];
+  document.getElementById('arc-meet').value=mn;
+  document.getElementById('arc-date').value=md;
+  document.getElementById('arc-location').value='';
+
+  // Build per-athlete result fields
+  const el=document.getElementById('arc-athletes-list');
+  el.innerHTML=S.athletes.map((a,i)=>{
+    const bSq=confirmed(a.sqA,a.sqR)||0;
+    const bBp=confirmed(a.bpA,a.bpR)||0;
+    const bDl=confirmed(a.dlA,a.dlR)||0;
+    const tot=bSq+bBp+bDl;
+    const glPts=tot&&a.bw?gl(tot,a.bw,a.sex):0;
+    return '<div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:10px;margin-bottom:8px;">'
+      +'<div style="font-size:13px;font-weight:700;margin-bottom:8px;">'+a.name
+      +'<span style="font-size:10px;color:var(--mu);font-weight:400;margin-left:8px;">'+a.div+' · '+a.cat+'</span></div>'
+      +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:6px;">'
+      +['Squat','Bench','Deadlift','Total'].map((lbl,li)=>{
+        const v=[bSq,bBp,bDl,tot][li];
+        return '<div style="text-align:center;"><div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">'+lbl+'</div>'
+          +'<div style="font-size:13px;font-weight:800;font-family:monospace;color:'+(v?'var(--go)':'var(--di)')+';">'+( v||'—')+'</div></div>';
+      }).join('')
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">'
+      +'<div class="fg"><label style="font-size:9px;">IPF GL</label>'
+      +'<input type="number" step="0.01" id="arc-gl-'+i+'" value="'+(glPts?glPts.toFixed(2):'')+'" placeholder="pts" style="background:var(--s1);border:1px solid var(--bd2);border-radius:5px;color:var(--tx);font-size:12px;padding:4px 7px;width:100%;font-family:monospace;"></div>'
+      +'<div class="fg"><label style="font-size:9px;">Rang final</label>'
+      +'<input type="number" id="arc-rank-'+i+'" placeholder="ex: 2" style="background:var(--s1);border:1px solid var(--bd2);border-radius:5px;color:var(--tx);font-size:12px;padding:4px 7px;width:100%;font-family:monospace;"></div>'
+      +'<div class="fg"><label style="font-size:9px;">Notes</label>'
+      +'<input id="arc-notes-'+i+'" placeholder="notes..." style="background:var(--s1);border:1px solid var(--bd2);border-radius:5px;color:var(--tx);font-size:12px;padding:4px 7px;width:100%;"></div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+
+  openM('m-archive');
+}
+
+function confirmArchive(){
+  const meetName=document.getElementById('arc-meet').value.trim();
+  const meetDate=document.getElementById('arc-date').value;
+  if(!meetName){alert('Entre le nom de la compétition');return;}
+  if(!meetDate){alert('Entre la date');return;}
+
+  const meetRecord={
+    id: Date.now(),
+    meet: meetName,
+    date: meetDate,
+    location: document.getElementById('arc-location').value||'',
+    athletes: S.athletes.map((a,i)=>{
+      const bSq=confirmed(a.sqA,a.sqR)||0;
+      const bBp=confirmed(a.bpA,a.bpR)||0;
+      const bDl=confirmed(a.dlA,a.dlR)||0;
+      const tot=bSq+bBp+bDl;
+      const glInp=parseFloat(document.getElementById('arc-gl-'+i)?.value)||0;
+      const rankInp=parseInt(document.getElementById('arc-rank-'+i)?.value)||null;
+      const notesInp=document.getElementById('arc-notes-'+i)?.value||'';
+      return{
+        name:a.name, div:a.div, cat:a.cat, sex:a.sex, bw:a.bw,
+        flight:a.flight, lot:a.lot, platform:a.platform||'', session:a.session||'',
+        sq:bSq, bp:bBp, dl:bDl, total:tot,
+        gl:glInp||(tot&&a.bw?parseFloat(gl(tot,a.bw,a.sex).toFixed(2)):0),
+        rank:rankInp,
+        notes:notesInp,
+        prCompSq:a.prSq, prCompBp:a.prBp, prCompDl:a.prDl,
+        objSq:a.objSq, objBp:a.objBp, objDl:a.objDl,
+        rackSq:a.rackSq, rackBp:a.rackBp,
+        // Record PRs: did they beat their comp PR?
+        newPrSq: bSq&&a.prSq&&bSq>a.prSq,
+        newPrBp: bBp&&a.prBp&&bBp>a.prBp,
+        newPrDl: bDl&&a.prDl&&bDl>a.prDl,
+        newPrTotal: tot&&(a.prSq+a.prBp+a.prDl)&&tot>(a.prSq+a.prBp+a.prDl)
+      };
+    })
+  };
+
+  if(!S.history) S.history=[];
+  S.history.push(meetRecord);
+
+  // Auto-update PRs for athletes who set new records
+  S.athletes.forEach((a,i)=>{
+    const rec=meetRecord.athletes[i];
+    if(rec.newPrSq){ a.prSq=rec.sq; }
+    if(rec.newPrBp){ a.prBp=rec.bp; }
+    if(rec.newPrDl){ a.prDl=rec.dl; }
+  });
+
+  closeM('m-archive');
+  saveToLocal();
+  renderHistorique();
+  renderSetup();
+  alert('✅ Compétition archivée! Les nouveaux PRs ont été mis à jour automatiquement.');
+}
+
+function deleteArchive(meetId){
+  if(!confirm('Supprimer cette comp\u00e9tition de l\u0027historique?'))return;
+  S.history=(S.history||[]).filter(m=>m.id!==meetId);
+  saveToLocal();
+  renderHistorique();
+}
+
+// ── RENDER HISTORIQUE
+function renderHistorique(){
+  renderAthBar('ab-hi');
+  const el=document.getElementById('hi-content');
+  const a=S.athletes[S.curAth];
+  if(!a){el.innerHTML='<div class="empty"><div class="ei">📈</div><p>Ajoute des athlètes dans Setup</p></div>';return;}
+
+  const history=(S.history||[])
+    .filter(m=>m.athletes.some(r=>r.name===a.name))
+    .sort((a,b)=>b.date.localeCompare(a.date));
+
+  if(!history.length){
+    el.innerHTML='<div class="empty" style="padding:40px"><div class="ei">📈</div><h3 style="font-size:14px;font-weight:700;margin-bottom:6px;">Aucune compétition archivée</h3><p>Utilise le bouton 🏆 Archiver après chaque compétition</p></div>';
+    return;
+  }
+
+  // Build progression data for charts
+  const records=history.map(m=>m.athletes.find(r=>r.name===a.name)).filter(Boolean).reverse();
+
+  let h='';
+
+  // ── STATS SUMMARY
+  const totals=records.map(r=>r.total).filter(Boolean);
+  const gls=records.map(r=>r.gl).filter(Boolean);
+  const bestTot=totals.length?Math.max(...totals):0;
+  const bestGL=gls.length?Math.max(...gls):0;
+  const lastTot=totals.length?totals[totals.length-1]:0;
+  const prevTot=totals.length>1?totals[totals.length-2]:0;
+  const progress=lastTot&&prevTot?lastTot-prevTot:0;
+
+  h+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;">';
+  h+='<div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:8px;text-align:center;box-shadow:var(--shadow);">';
+  h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">Compétitions</div>';
+  h+='<div style="font-size:22px;font-weight:900;font-family:monospace;color:var(--go);">'+history.length+'</div>';
+  h+='</div>';
+  h+='<div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:8px;text-align:center;box-shadow:var(--shadow);">';
+  h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">Meilleur total</div>';
+  h+='<div style="font-size:22px;font-weight:900;font-family:monospace;color:var(--go);">'+(bestTot||'—')+' <span style="font-size:11px;">kg</span></div>';
+  h+='</div>';
+  h+='<div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:8px;text-align:center;box-shadow:var(--shadow);">';
+  h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">Progression</div>';
+  h+='<div style="font-size:22px;font-weight:900;font-family:monospace;color:'+(progress>=0?'var(--gr)':'var(--re)')+';">'+(progress>=0?'+':'')+progress+' <span style="font-size:11px;">kg</span></div>';
+  h+='</div>';
+  h+='</div>';
+
+  // ── PROGRESSION VISUAL BAR CHART (simple CSS)
+  if(records.length>1&&totals.length>1){
+    const maxT=Math.max(...totals);
+    h+='<div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:12px;margin-bottom:12px;box-shadow:var(--shadow);">';
+    h+='<div style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;margin-bottom:10px;">📊 Progression du total</div>';
+    h+='<div style="display:flex;align-items:flex-end;gap:6px;height:80px;">';
+    records.forEach((r,i)=>{
+      const t=r.total||0;
+      const pct=maxT>0?Math.round((t/maxT)*100):0;
+      const isLast=i===records.length-1;
+      h+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">';
+      h+='<div style="font-size:9px;font-family:monospace;font-weight:700;color:'+(isLast?'var(--go)':'var(--mu)')+';">'+(t||'—')+'</div>';
+      h+='<div style="width:100%;background:'+(isLast?'var(--go)':'var(--bl)')+';border-radius:3px 3px 0 0;height:'+pct+'%;min-height:4px;"></div>';
+      // Year label
+      const yr=history.filter(m=>m.athletes.some(x=>x.name===a.name)).reverse()[i]?.date?.slice(0,4)||'';
+      h+='<div style="font-size:8px;color:var(--di);">'+yr+'</div>';
+      h+='</div>';
+    });
+    h+='</div></div>';
+  }
+
+  // ── MEET CARDS (newest first)
+  h+='<div style="font-size:10px;font-weight:700;color:var(--di);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Historique des compétitions</div>';
+
+  history.forEach(meet=>{
+    const rec=meet.athletes.find(r=>r.name===a.name);
+    if(!rec)return;
+    const prTot=rec.prCompSq&&rec.prCompBp&&rec.prCompDl?rec.prCompSq+rec.prCompBp+rec.prCompDl:0;
+    const totDiffFromPR=rec.total&&prTot?rec.total-prTot:null;
+    const prs=[rec.newPrSq&&'SQ',rec.newPrBp&&'BP',rec.newPrDl&&'DL',rec.newPrTotal&&'TOTAL'].filter(Boolean);
+
+    h+='<div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow);">';
+    // Header
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--s2);border-bottom:1px solid var(--bd);">';
+    h+='<div>';
+    h+='<div style="font-size:13px;font-weight:800;">'+meet.meet+'</div>';
+    h+='<div style="font-size:11px;color:var(--mu);margin-top:2px;">'+formatDateFr(meet.date)+(meet.location?' · '+meet.location:'')+'</div>';
+    h+='</div>';
+    h+='<div style="display:flex;align-items:center;gap:6px;">';
+    if(rec.rank){
+      const rkCls=rec.rank===1?'var(--go)':rec.rank<=3?'var(--gr)':'var(--mu)';
+      h+='<div style="background:var(--s3);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:'+rkCls+';">#'+rec.rank+'</div>';
+    }
+    h+='<button onclick="deleteArchive('+meet.id+')" style="background:var(--rebg);border:1px solid var(--rebr);color:var(--re);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;">✕</button>';
+    h+='</div></div>';
+
+    // Results grid
+    h+='<div style="padding:10px 12px;">';
+    h+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px;">';
+    [['Squat',rec.sq],['Bench',rec.bp],['Deadlift',rec.dl],['Total',rec.total]].forEach(([lbl,v])=>{
+      h+='<div style="background:var(--s2);border-radius:var(--r);padding:6px;text-align:center;">';
+      h+='<div style="font-size:9px;color:var(--di);text-transform:uppercase;margin-bottom:2px;">'+lbl+'</div>';
+      h+='<div style="font-size:14px;font-weight:800;font-family:monospace;color:var(--go);">'+(v||'—')+'</div>';
+      h+='</div>';
+    });
+    h+='</div>';
+
+    // GL + div/cat row
+    h+='<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">';
+    if(rec.gl) h+='<span style="font-size:11px;color:var(--te);font-weight:700;">GL: '+rec.gl.toFixed(2)+' pts</span>';
+    h+='<span style="font-size:11px;color:var(--mu);">'+rec.div+' · '+rec.cat+(rec.bw?' · '+rec.bw+'kg':'')+'</span>';
+    if(rec.platform) h+='<span style="font-size:11px;color:var(--mu);">📍 Plateforme '+rec.platform+'</span>';
+    if(rec.session) h+='<span style="font-size:11px;color:var(--mu);">Session '+rec.session+'</span>';
+    h+='</div>';
+
+    // New PRs badges
+    if(prs.length){
+      h+='<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">';
+      prs.forEach(p=>{
+        h+='<span style="background:rgba(245,197,24,.15);border:1px solid var(--go3);color:var(--go);font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;">🏆 PR '+p+'</span>';
+      });
+      h+='</div>';
+    }
+
+    // Progress vs previous PR
+    if(totDiffFromPR!==null){
+      h+='<div style="font-size:11px;color:'+(totDiffFromPR>=0?'var(--gr)':'var(--re)')+';">';
+      h+=(totDiffFromPR>=0?'▲ +'+totDiffFromPR+'kg vs PR précédent':'▼ '+totDiffFromPR+'kg vs PR précédent');
+      h+='</div>';
+    }
+
+    // Notes
+    if(rec.notes){
+      h+='<div style="margin-top:6px;font-size:11px;color:var(--mu);font-style:italic;">📝 '+rec.notes+'</div>';
+    }
+
+    h+='</div></div>';
+  });
+
+  el.innerHTML=h;
+}
+
+function formatDateFr(d){
+  if(!d)return'—';
+  const [y,m,day]=d.split('-');
+  const months=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+  return day+' '+months[parseInt(m)-1]+' '+y;
+}
+
+// ── LOCAL STORAGE AUTO-SAVE
+function saveToLocal(){
+  try{ localStorage.setItem('plcoach-data', JSON.stringify(S)); }catch(e){}
+}
+
+function loadFromLocal(){
+  try{
+    const raw=localStorage.getItem('plcoach-data');
+    if(!raw)return;
+    const d=JSON.parse(raw);
+    if(d.meet)S.meet=d.meet;
+    if(d.athletes)S.athletes=d.athletes.map(makeAth);
+    if(d.lifters)S.lifters=d.lifters||[];
+    if(d.history)S.history=d.history||[];
+    if(d.standards)S.standards=d.standards||{fqd:{},centraux:{},nationaux:{}};
+    if(d.curAth!==undefined)S.curAth=Math.min(d.curAth,Math.max(0,S.athletes.length-1));
+    // Restore meet fields in UI
+    const smEl=document.getElementById('s-meet');
+    const sdEl=document.getElementById('s-date');
+    if(smEl&&S.meet.name)smEl.value=S.meet.name;
+    if(sdEl&&S.meet.date)sdEl.value=S.meet.date;
+    syncMeet();
+  }catch(e){ console.warn('Could not load saved data',e); }
+}
+
+// ── Save on every state change (auto-save)
+// setRes auto-saves internally
+
+// ── THEME TOGGLE
+let currentTheme = localStorage.getItem('plcoach-theme') || 'light';
+function applyTheme(t){
+  currentTheme=t;
+  document.documentElement.setAttribute('data-theme', t==='dark'?'dark':'');
+  const btn=document.getElementById('theme-toggle');
+  if(btn) btn.textContent = t==='dark'?'☀️':'🌙';
+  try{ localStorage.setItem('plcoach-theme',t); }catch(e){}
+}
+function toggleTheme(){
+  applyTheme(currentTheme==='dark'?'light':'dark');
+}
+applyTheme(currentTheme);
+
+document.getElementById('ma-sex').addEventListener('change',refreshCats);
+refreshCats();
+document.getElementById('s-date').value=new Date().toISOString().split('T')[0];
+renderGP();renderSetup();renderFlight();
+</script>
+</body>
+</html>
